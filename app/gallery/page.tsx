@@ -19,6 +19,6 @@ export const metadata: Metadata = {
 };
 
 export default async function GalleryPage() {
-  const dbImages = await getGalleryImages();
-  return <GalleryClient dbImages={dbImages} />;
+  const { data: dbImages, error: galleryError } = await getGalleryImages();
+  return <GalleryClient dbImages={dbImages} loadError={galleryError} />;
 }

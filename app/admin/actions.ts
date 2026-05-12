@@ -266,6 +266,7 @@ export async function upsertReviewAction(formData: FormData) {
 
   revalidatePath("/admin/reviews");
   revalidatePath("/reviews");
+  revalidatePath("/");
 }
 
 export async function deleteReviewAction(formData: FormData) {
@@ -277,6 +278,7 @@ export async function deleteReviewAction(formData: FormData) {
   if (error) redirect(`/admin/reviews?error=${encodeURIComponent(error.message)}`);
   revalidatePath("/admin/reviews");
   revalidatePath("/reviews");
+  revalidatePath("/");
 }
 
 export async function deleteBookingAction(formData: FormData) {

@@ -1,15 +1,17 @@
 import { createClient } from "@/lib/supabase/server";
 import type { GalleryImageRow, ProductRow, ReviewRow, ServiceRow } from "@/lib/db/types";
 
-export async function getGalleryImages(): Promise<GalleryImageRow[]> {
+export type GalleryImagesResult = { data: GalleryImageRow[]; error: string | null };
+
+export async function getGalleryImages(): Promise<GalleryImagesResult> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("gallery_images")
     .select("id, image_url, caption, created_at")
     .order("created_at", { ascending: false });
 
-  if (error) return [];
-  return (data ?? []) as GalleryImageRow[];
+  if (error) return { data: [], error: error.message };
+  return { data: (data ?? []) as GalleryImageRow[], error: null };
 }
 
 export async function getServices(): Promise<ServiceRow[]> {

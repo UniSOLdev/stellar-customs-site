@@ -10,9 +10,11 @@ const FILTERS: Array<GalleryCategory | "All"> = ["All", "Repairs", "Lighting", "
 
 type Props = {
   dbImages: GalleryImageRow[];
+  /** Non-null when the gallery query failed (falls back to static masonry). */
+  loadError?: string | null;
 };
 
-export function GalleryClient({ dbImages }: Props) {
+export function GalleryClient({ dbImages, loadError }: Props) {
   const useLive = dbImages.length > 0;
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -89,10 +91,18 @@ export function GalleryClient({ dbImages }: Props) {
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Portfolio</p>
         <h1 className="font-display mt-2 text-4xl font-bold text-white sm:text-5xl">Gallery</h1>
         <p className="mt-4 max-w-2xl text-zinc-400">
-          {useLive
-            ? "Live photos from your Stellar Customs gallery — tap any shot to open the lightbox."
-            : "Masonry layout with lightbox — swap gradient tiles for your photography when assets are uploaded."}
+          {loadError
+            ? "We couldn’t load live photos — showing curated placeholders. Try again in a moment."
+            : useLive
+              ? "Live photos from your Stellar Customs gallery — tap any shot to open the lightbox."
+              : "Masonry layout with lightbox — swap gradient tiles for your photography when assets are uploaded."}
         </p>
+
+        {loadError && !useLive ? (
+          <div className="mt-6 rounded-xl border border-stellar-orange/35 bg-stellar-orange/10 px-4 py-3 text-sm text-stellar-orange-soft">
+            Gallery sync issue: {loadError}
+          </div>
+        ) : null}
 
         {!useLive ? (
           <div className="mt-10 flex flex-wrap gap-2">

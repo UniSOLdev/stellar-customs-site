@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [services, gallery, reviewRows] = await Promise.all([
+  const [services, galleryRes, reviewRows] = await Promise.all([
     getServices(),
     getGalleryImages(),
     getReviews(),
@@ -45,6 +45,11 @@ export default async function HomePage() {
   const initialReviews = reviewsForHomeFromDb(reviewRows);
 
   return (
-    <HomePageClient services={services} galleryPreview={gallery} initialReviews={initialReviews} />
+    <HomePageClient
+      services={services}
+      galleryPreview={galleryRes.data}
+      galleryLoadError={galleryRes.error}
+      initialReviews={initialReviews}
+    />
   );
 }

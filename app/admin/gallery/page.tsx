@@ -11,7 +11,7 @@ export default async function AdminGalleryPage({
 }) {
   const sp = await searchParams;
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("gallery_images")
     .select("id, image_url, caption, created_at")
     .order("created_at", { ascending: false });
@@ -19,7 +19,7 @@ export default async function AdminGalleryPage({
   return (
     <GalleryAdminClient
       initial={(data ?? []) as GalleryImageRow[]}
-      queryError={typeof sp.error === "string" ? sp.error : undefined}
+      queryError={typeof sp.error === "string" ? sp.error : error?.message}
     />
   );
 }

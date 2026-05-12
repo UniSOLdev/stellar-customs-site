@@ -25,10 +25,12 @@ const productCategories = [
 type Props = {
   services: ServiceRow[];
   galleryPreview: GalleryImageRow[];
+  /** Set when Supabase gallery query failed (layout unchanged; shows subtle notice). */
+  galleryLoadError?: string | null;
   initialReviews: HomeReviewSlide[];
 };
 
-export function HomePageClient({ services, galleryPreview, initialReviews }: Props) {
+export function HomePageClient({ services, galleryPreview, galleryLoadError, initialReviews }: Props) {
   const useDbGallery = galleryPreview.length > 0;
   return (
     <>
@@ -104,9 +106,11 @@ export function HomePageClient({ services, galleryPreview, initialReviews }: Pro
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Portfolio</p>
                 <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">Recent Work</h2>
                 <p className="mt-3 max-w-xl text-zinc-400">
-                  {useDbGallery
-                    ? "Photos from your live gallery — tap through to see the full wall."
-                    : "Precision installs and honest workmanship — upload your project shots to replace these placeholders."}
+                  {galleryLoadError
+                    ? "We couldn’t reach the live gallery right now — showing placeholders until the connection is back."
+                    : useDbGallery
+                      ? "Photos from your live gallery — tap through to see the full wall."
+                      : "Precision installs and honest workmanship — upload your project shots to replace these placeholders."}
                 </p>
               </div>
               <div className="w-full shrink-0 md:w-auto">
@@ -116,6 +120,12 @@ export function HomePageClient({ services, galleryPreview, initialReviews }: Pro
               </div>
             </div>
           </SectionReveal>
+
+          {galleryLoadError && !useDbGallery ? (
+            <div className="mt-8 rounded-xl border border-stellar-orange/35 bg-stellar-orange/10 px-4 py-3 text-sm text-stellar-orange-soft">
+              Gallery couldn’t load: {galleryLoadError}
+            </div>
+          ) : null}
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {useDbGallery
