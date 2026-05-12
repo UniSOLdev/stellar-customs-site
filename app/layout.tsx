@@ -23,22 +23,22 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CANONICAL),
   title: {
-    default: `${SITE.name} | Mobile Mechanic Alabama`,
-    template: `%s | ${SITE.name}`,
+    default: `${SITE.shortName} | Luxury Mobile Automotive — South Florida & Alabama`,
+    template: `%s | ${SITE.shortName}`,
   },
-  description: `${SITE.tagline}. ${SITE.subline} Professional on-site automotive repair serving Odenville and surrounding Alabama communities.`,
+  description: `${SITE.tagline} ${SITE.subline} Premium starlight headliner installs, ambient lighting, and concierge mobile repair across Palm Beach, Miami, Fort Lauderdale, Birmingham, Huntsville, and Alabama.`,
   keywords: [
-    "mobile mechanic",
-    "Alabama",
-    "Odenville",
-    "automotive repair",
+    "luxury mobile automotive South Florida",
+    "starlight headliner install Alabama",
+    "ambient lighting installation Miami",
+    "custom Escalade lighting",
+    "mobile automotive lighting Fort Lauderdale",
+    "luxury vehicle customization Palm Beach",
+    "mobile mechanic Birmingham",
     "Stellar Customs",
-    "on-site mechanic",
-    "custom automotive lighting Alabama",
-    "on-site vehicle repair Odenville",
   ],
   openGraph: {
-    title: SITE.name,
+    title: `${SITE.shortName} | Luxury Mobile Automotive`,
     description: SITE.tagline,
     url: SITE_CANONICAL,
     siteName: SITE.name,
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/STELLAR%20CUSTUMS%20LOGO.jpg",
+        url: "/stellar-logo.png",
         width: 1200,
         height: 630,
         alt: SITE.name,

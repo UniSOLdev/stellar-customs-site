@@ -1,5 +1,9 @@
-/** Public URL for the hero logo (filename as provided). Encode spaces for the browser. */
-export const HERO_LOGO_PATH = "/STELLAR%20CUSTUMS%20LOGO.jpg";
+/** Public URL for brand logo (transparent PNG, optimized for web). */
+export const HERO_LOGO_PATH = "/stellar-logo.png";
+
+/** Intrinsic width / height of `stellar-logo.png` (trimmed artwork). Used for layout aspect ratio. */
+export const LOGO_ASPECT_WIDTH = 768;
+export const LOGO_ASPECT_HEIGHT = 460;
 
 /** Canonical site URL for OG, JSON-LD, and metadataBase. Override with NEXT_PUBLIC_SITE_URL in production. */
 function resolveSiteCanonical(): string {
@@ -11,9 +15,32 @@ function resolveSiteCanonical(): string {
 export const SITE_CANONICAL = resolveSiteCanonical();
 
 export const SERVICE_CATEGORY_LINE =
-  "Automotive Repair Shop · Mobile Mechanic · Custom Lighting";
+  "Luxury mobile automotive · Custom lighting · Concierge diagnostics";
 
 const ADDRESS_LINE = "990 Lovejoy Terrace, Odenville, AL 35120";
+
+/** Primary luxury positioning — dual region without keyword stuffing. */
+export const REGIONAL_PITCH =
+  "Mobile luxury automotive services across South Florida and Alabama — from Palm Beach and Miami to Birmingham and Huntsville.";
+
+export const SOUTH_FLORIDA_MARKETS = [
+  "Palm Beach",
+  "Boca Raton",
+  "Miami",
+  "Fort Lauderdale",
+  "West Palm Beach",
+] as const;
+
+export const ALABAMA_MARKETS = [
+  "Birmingham",
+  "Huntsville",
+  "Mobile",
+  "Montgomery",
+  "Odenville",
+  "Trussville",
+  "Moody",
+  "Pell City",
+] as const;
 
 export const SITE = {
   /** Customer-facing brand (matches Google Business Profile). */
@@ -22,8 +49,8 @@ export const SITE = {
   legalName: "Stellar Customs, LLC",
   /** Compact brand variant for tight UI. */
   shortName: "Stellar Customs",
-  tagline: "Alabama’s Most Trusted Mobile Mechanic",
-  subline: "Honest. Reliable. On-Site.",
+  tagline: "Luxury Mobile Automotive — South Florida & Alabama",
+  subline: "Concierge diagnostics, ambient lighting, and on-site installs — with the restraint of a premium shop.",
   phone: "(207) 557-4193",
   phoneDigits: "2075574193",
   email: "stellarcustoms205@gmail.com",
@@ -37,10 +64,14 @@ export const SITE = {
   addressLine: ADDRESS_LINE,
   /** Short human location label. */
   location: "Odenville, Alabama",
-  /** Service-area cities, priority order. */
+  /** Legacy combined list — prefer SOUTH_FLORIDA_MARKETS + ALABAMA_MARKETS in UI. */
   serviceAreas: [
-    "Odenville",
+    "Miami",
+    "Fort Lauderdale",
+    "West Palm Beach",
     "Birmingham",
+    "Huntsville",
+    "Odenville",
     "Trussville",
     "Moody",
     "Pell City",
@@ -60,7 +91,7 @@ export const SITE = {
 
 /** Plausible static social proof for homepage metrics (count-up section). */
 export const SITE_STATS = {
-  vehiclesServiced: 780,
+  vehiclesCustomized: 780,
   fiveStarReviews: SITE.reviewCount,
   yearsExperience: 8,
   /** Shown after count-up as suffix, e.g. "2" + " hrs avg" */
@@ -70,6 +101,13 @@ export const SITE_STATS = {
 /** `tel:` link — digits only per click-to-call spec. */
 export function siteTelHref() {
   return `tel:${SITE.phoneDigits}`;
+}
+
+/** SMS deep link (US). */
+export function siteSmsHref(body?: string) {
+  const base = `sms:+1${SITE.phoneDigits}`;
+  if (!body?.trim()) return base;
+  return `${base}?body=${encodeURIComponent(body)}`;
 }
 
 /** E.164 for structured data */

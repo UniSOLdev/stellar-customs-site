@@ -24,7 +24,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       <CartProvider>
         <div className="noise-overlay" aria-hidden />
         <Navbar />
-        <main className="relative z-10 flex-1 pb-28 md:pb-0">{children}</main>
+        <main className="relative z-10 flex-1 pb-40 md:pb-0">{children}</main>
         <Footer />
         <StickyMobileCall />
       </CartProvider>

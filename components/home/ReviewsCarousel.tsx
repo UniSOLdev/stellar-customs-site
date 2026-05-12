@@ -7,12 +7,27 @@ import { SectionReveal } from "@/components/SectionReveal";
 
 const AUTO_MS = 9000;
 
+function initials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  const a = parts[0]?.[0] ?? "?";
+  const b = parts.length > 1 ? parts[parts.length - 1]![0] : parts[0]?.[1];
+  return (a + (b ?? "")).toUpperCase();
+}
+
 function Stars({ n }: { n: number }) {
   const filled = Math.min(5, Math.max(0, Math.round(n)));
   return (
-    <div className="flex gap-0.5 text-stellar-orange" aria-label={`${filled} out of 5 stars`}>
+    <div className="flex gap-1" aria-label={`${filled} out of 5 stars`}>
       {Array.from({ length: 5 }).map((_, i) => (
-        <span key={i} className={i < filled ? "opacity-100" : "opacity-25"} aria-hidden>
+        <span
+          key={i}
+          className={
+            i < filled
+              ? "text-lg text-stellar-orange drop-shadow-[0_0_14px_rgba(255,107,0,0.55)]"
+              : "text-lg text-zinc-700"
+          }
+          aria-hidden
+        >
           ★
         </span>
       ))}
@@ -52,12 +67,13 @@ export function ReviewsCarousel({ reviews }: Props) {
 
   return (
     <section className="relative border-t border-stellar-blue/10 bg-stellar-black py-20 sm:py-28">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(0,180,255,0.06),transparent)]" aria-hidden />
+      <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <SectionReveal>
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Clients</p>
           <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">What people say</h2>
-          <p className="mt-3 max-w-xl text-sm text-zinc-400">
-            Real feedback from Alabama drivers — pulled from our database when available.
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-400">
+            Verified voices from South Florida and Alabama — pulled from your database when live reviews are available.
           </p>
         </SectionReveal>
 
@@ -93,18 +109,28 @@ export function ReviewsCarousel({ reviews }: Props) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="rounded-3xl border border-white/[0.07] bg-white/[0.02] p-8 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.85)] backdrop-blur-md ring-1 ring-stellar-blue/[0.08] sm:p-10"
+              className="rounded-3xl border border-white/[0.07] bg-white/[0.03] p-8 shadow-[0_28px_70px_-28px_rgba(0,0,0,0.9)] backdrop-blur-xl ring-1 ring-stellar-blue/[0.1] sm:p-10"
             >
-              <Stars n={current.rating} />
-              <blockquote className="mt-6 text-lg leading-relaxed text-zinc-100 sm:text-xl">
-                &ldquo;{current.review_text}&rdquo;
-              </blockquote>
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+                <div
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-stellar-blue/20 to-stellar-orange/10 font-display text-sm font-bold tracking-wide text-white shadow-[0_0_24px_rgba(0,180,255,0.15)]"
+                  aria-hidden
+                >
+                  {initials(current.customer_name)}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <Stars n={current.rating} />
+                  <blockquote className="mt-6 text-lg leading-relaxed text-zinc-100 sm:text-xl">
+                    &ldquo;{current.review_text}&rdquo;
+                  </blockquote>
+                </div>
+              </div>
               <figcaption className="mt-8 flex flex-col gap-1 border-t border-white/5 pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-semibold text-white">{current.customer_name}</p>
                   <p className="text-xs uppercase tracking-wider text-zinc-500">{current.service_type}</p>
                 </div>
-                <p className="text-[11px] text-zinc-600">Swipe or use arrows — auto-advances when idle.</p>
+                <p className="text-[11px] text-zinc-600">Facebook &amp; Google-verified workflows · swipe for more</p>
               </figcaption>
             </motion.figure>
           </AnimatePresence>
@@ -140,7 +166,7 @@ export function ReviewsCarousel({ reviews }: Props) {
                     aria-current={dot === idx ? true : undefined}
                     onClick={() => setI(dot)}
                     className={`h-1.5 rounded-full transition-all ${
-                      dot === idx ? "w-8 bg-stellar-blue" : "w-1.5 bg-zinc-600 hover:bg-zinc-500"
+                      dot === idx ? "w-8 bg-stellar-blue shadow-[0_0_12px_rgba(0,180,255,0.45)]" : "w-1.5 bg-zinc-600 hover:bg-zinc-500"
                     }`}
                   />
                 ))}

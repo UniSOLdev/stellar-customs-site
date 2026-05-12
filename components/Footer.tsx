@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { HERO_LOGO_PATH, SITE, siteTelHref } from "@/lib/site";
+import { HERO_LOGO_PATH, LOGO_ASPECT_HEIGHT, LOGO_ASPECT_WIDTH, SITE, siteTelHref } from "@/lib/site";
 import { FollowUsLinks } from "@/components/FollowUsLinks";
 
 export function Footer() {
@@ -8,13 +8,17 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="flex items-center gap-4">
-            <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg ring-1 ring-stellar-blue/30">
+            <span
+              className="relative h-14 w-auto shrink-0 rounded-lg bg-transparent ring-1 ring-stellar-blue/30"
+              style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
+            >
               <Image
                 src={HERO_LOGO_PATH}
                 alt={`${SITE.name} logo`}
                 fill
-                className="object-contain p-1"
-                sizes="56px"
+                className="object-contain p-1 [image-rendering:-webkit-optimize-contrast] bg-transparent drop-shadow-[0_0_1px_rgba(255,255,255,0.06)]"
+                sizes="(max-width: 768px) 168px, 112px"
+                quality={96}
               />
             </span>
             <div>

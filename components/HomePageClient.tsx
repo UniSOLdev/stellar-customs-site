@@ -8,9 +8,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { GALLERY_ITEMS } from "@/lib/gallery-data";
 import { HomeTrustSection } from "@/components/HomeTrustSection";
+import { TransformationShowcase } from "@/components/home/TransformationShowcase";
+import { ServiceAreasSection } from "@/components/home/ServiceAreasSection";
 import { WhyChooseSection } from "@/components/home/WhyChooseSection";
 import { StatsBarSection } from "@/components/home/StatsBarSection";
 import { ReviewsCarousel } from "@/components/home/ReviewsCarousel";
+import { CinematicIntro } from "@/components/cinematic-intro/CinematicIntro";
 import type { GalleryImageRow, ServiceRow } from "@/lib/db/types";
 import type { HomeReviewSlide } from "@/lib/reviews-carousel-data";
 
@@ -34,9 +37,12 @@ export function HomePageClient({ services, galleryPreview, galleryLoadError, ini
   const useDbGallery = galleryPreview.length > 0;
   return (
     <>
+      <CinematicIntro />
       <HeroSection />
 
       <HomeTrustSection />
+
+      <TransformationShowcase />
 
       <WhyChooseSection />
 
@@ -199,6 +205,8 @@ export function HomePageClient({ services, galleryPreview, galleryLoadError, ini
         </div>
       </section>
 
+      <ServiceAreasSection />
+
       {/* Booking preview */}
       <section className="relative py-20 sm:py-28">
         <div className="absolute inset-0 bg-gradient-to-b from-stellar-void via-stellar-black to-stellar-void" />
@@ -220,7 +228,7 @@ export function HomePageClient({ services, galleryPreview, galleryLoadError, ini
               },
               {
                 title: "Fast Response",
-                body: "Rapid scheduling across Odenville and surrounding Alabama routes.",
+                body: "Same-week routing across South Florida coastal lanes and Alabama metro corridors when capacity allows.",
               },
             ].map((card, i) => (
               <SectionReveal key={card.title} delay={i * 0.08}>

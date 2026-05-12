@@ -13,6 +13,7 @@
  */
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { authDevVerbose } from "@/lib/auth/debug";
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -30,8 +31,12 @@ export async function createClient() {
             cookiesToSet.forEach(({ name, value, options }) => {
               cookieStore.set(name, value, options);
             });
-          } catch {
+          } catch (e) {
             /* set from Server Component — session refresh may be skipped */
+            authDevVerbose("supabase/server:setAll_skipped", {
+              names: cookiesToSet.map((c) => c.name),
+              error: e instanceof Error ? e.message : String(e),
+            });
           }
         },
       },

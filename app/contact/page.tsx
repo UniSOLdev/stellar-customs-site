@@ -1,21 +1,26 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { FollowUsLinks } from "@/components/FollowUsLinks";
-import { BUSINESS_HOURS_PLACEHOLDER, HERO_LOGO_PATH, SITE, siteTelHref } from "@/lib/site";
+import { BUSINESS_HOURS_PLACEHOLDER, HERO_LOGO_PATH, LOGO_ASPECT_HEIGHT, LOGO_ASPECT_WIDTH, SITE, siteTelHref } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Contact | Mobile Mechanic Alabama",
-  description: `Contact ${SITE.name} — mobile mechanic Alabama, custom automotive lighting Alabama, and on-site vehicle repair Odenville. Call, email, or message.`,
-  keywords: ["contact Stellar Customs", "Odenville mobile mechanic", "Alabama automotive lighting"],
+  title: "Contact | Luxury Mobile Automotive — Florida & Alabama",
+  description: `Contact ${SITE.name} — concierge mobile service across South Florida and Alabama. Request a quote, schedule an install, or reach the team for emergency routing.`,
+  keywords: [
+    "contact Stellar Customs",
+    "luxury mobile automotive Miami",
+    "mobile mechanic Birmingham",
+    "ambient lighting quote Palm Beach",
+  ],
   openGraph: {
-    title: `Contact | ${SITE.name}`,
-    description: `Reach ${SITE.name} for on-site repair and lighting in ${SITE.location}.`,
+    title: `Contact | ${SITE.shortName}`,
+    description: `Reach ${SITE.shortName} for luxury mobile installs and repair across Florida and Alabama.`,
   },
 };
 
 export default function ContactPage() {
   return (
-    <div className="min-h-dvh bg-stellar-black pb-28 pt-28 md:pb-24">
+    <div className="min-h-dvh bg-stellar-black pb-40 pt-28 md:pb-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Get in touch</p>
         <h1 className="font-display mt-2 text-4xl font-bold text-white sm:text-5xl">Contact</h1>
@@ -27,8 +32,18 @@ export default function ContactPage() {
         <div className="mt-12 grid gap-10 lg:grid-cols-2">
           <div className="space-y-8 rounded-3xl border border-stellar-blue/15 bg-stellar-surface/40 p-8 shadow-lg shadow-black/30 backdrop-blur-sm">
             <div className="flex items-center gap-4">
-              <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl ring-1 ring-stellar-blue/30">
-                <Image src={HERO_LOGO_PATH} alt={`${SITE.name} logo`} fill className="object-contain p-1" sizes="64px" />
+              <span
+                className="relative h-16 w-auto shrink-0 rounded-xl bg-transparent ring-1 ring-stellar-blue/30"
+                style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
+              >
+                <Image
+                  src={HERO_LOGO_PATH}
+                  alt={`${SITE.name} logo`}
+                  fill
+                  className="object-contain p-1 [image-rendering:-webkit-optimize-contrast] bg-transparent drop-shadow-[0_0_1px_rgba(255,255,255,0.07)]"
+                  sizes="(max-width: 768px) 192px, 128px"
+                  quality={96}
+                />
               </span>
               <div>
                 <p className="font-display text-lg font-bold text-white">{SITE.name}</p>

@@ -47,15 +47,11 @@ function Stat({ label, target, suffix = "", enabled }: StatProps) {
   );
 }
 
-function ResponseStat({ enabled }: { enabled: boolean }) {
-  const n = useCountUp(SITE_STATS.responseHours, enabled);
+function MobileCoverageStat() {
   return (
     <div className="text-center">
-      <p className="font-display text-3xl font-bold tabular-nums tracking-tight text-white sm:text-4xl">
-        {n}
-        <span className="text-2xl font-semibold text-zinc-400 sm:text-3xl"> hrs</span>
-      </p>
-      <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-500">Avg. response</p>
+      <p className="font-display text-[clamp(1.25rem,4vw,1.75rem)] font-bold tracking-tight text-white">Same-week</p>
+      <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-500">Mobile &amp; priority routing</p>
     </div>
   );
 }
@@ -83,13 +79,20 @@ export function StatsBarSection() {
         <SectionReveal>
           <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Proof</p>
           <h2 className="font-display mt-2 text-center text-2xl font-bold text-white sm:text-3xl">By the numbers</h2>
+          <p className="mx-auto mt-3 max-w-xl text-center text-xs text-zinc-500 sm:text-sm">
+            Mobile luxury coverage — South Florida and Alabama routes when capacity allows.
+          </p>
         </SectionReveal>
         <div className="mt-12 grid grid-cols-2 gap-10 md:grid-cols-4 md:gap-8">
-          <Stat label="Vehicles serviced" target={SITE_STATS.vehiclesServiced} suffix="+" enabled={on} />
+          <Stat label="Vehicles customized" target={SITE_STATS.vehiclesCustomized} suffix="+" enabled={on} />
           <Stat label="5-star reviews" target={SITE_STATS.fiveStarReviews} enabled={on} />
           <Stat label="Years experience" target={SITE_STATS.yearsExperience} suffix="+" enabled={on} />
-          <ResponseStat enabled={on} />
+          <MobileCoverageStat />
         </div>
+        <p className="mt-8 text-center text-xs text-zinc-600">
+          Typical callback under {SITE_STATS.responseHours} hours when lines are open — emergency installs routed when
+          schedules allow.
+        </p>
       </div>
     </section>
   );

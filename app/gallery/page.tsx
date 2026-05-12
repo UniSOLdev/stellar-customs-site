@@ -4,17 +4,19 @@ import { GalleryClient } from "@/components/GalleryClient";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Gallery | Custom Automotive Lighting & Repairs",
+  title: "Gallery | Luxury Lighting & Mobile Installs",
   description:
-    "Photo gallery of mobile mechanic work, custom automotive lighting Alabama, diagnostics, and on-site vehicle repair from Stellar Customs, LLC in Odenville.",
+    "Categorized portfolio of starlight headliners, ambient lighting, luxury upgrades, and mobile concierge work from Stellar Customs — South Florida to Alabama.",
   keywords: [
-    "custom automotive lighting Alabama",
-    "mobile mechanic gallery",
-    "Odenville automotive repair photos",
+    "starlight headliner gallery",
+    "luxury automotive lighting Miami",
+    "ambient lighting install Fort Lauderdale",
+    "mobile automotive gallery Alabama",
   ],
   openGraph: {
-    title: `Gallery | ${SITE.name}`,
-    description: "Recent repairs, lighting installs, diagnostics, and custom work from Stellar Customs.",
+    title: `Gallery | ${SITE.shortName}`,
+    description:
+      "Premium installs and mobile transformations — starlight, ambient lighting, audio, and performance detailing.",
   },
 };
 

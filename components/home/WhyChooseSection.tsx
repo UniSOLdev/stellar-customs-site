@@ -4,24 +4,24 @@ import { SectionReveal } from "@/components/SectionReveal";
 
 const CARDS = [
   {
-    title: "Mobile Convenience",
-    body: "Professional service at your home or workplace — no waiting rooms, no tow unless you need one.",
+    title: "Concierge mobile service",
+    body: "White-glove communication and on-site execution — from Palm Beach courtyards to Birmingham driveways.",
   },
   {
-    title: "Honest Diagnostics",
-    body: "Clear findings before parts are ordered. You approve the plan; we execute with care.",
+    title: "Diagnostics with restraint",
+    body: "Data-first findings before parts move. You see the plan; we protect your time and your build.",
   },
   {
-    title: "Professional Custom Lighting",
-    body: "Interior, accent, and show-ready installs with clean routing and lasting workmanship.",
+    title: "Lighting as architecture",
+    body: "Ambient, starlight, and accent programs routed like factory work — quiet, even, and built to last.",
   },
   {
-    title: "Fast Response Times",
-    body: "Same-week scheduling across our Alabama routes when capacity allows — ask for urgency.",
+    title: "Routing across two regions",
+    body: "South Florida luxury installs and Alabama mobile repair lanes — same-week when schedules allow.",
   },
   {
-    title: "Alabama Trusted Service",
-    body: "Built on referrals and repeat clients in Odenville and surrounding communities.",
+    title: "Reputation you can verify",
+    body: "Transparent reviews, verified profiles, and repeat clients who treat their vehicles like investments.",
   },
 ] as const;
 
@@ -39,7 +39,7 @@ export function WhyChooseSection() {
             Why Choose Stellar Customs
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400 sm:text-base">
-            Restrained workmanship and straight answers — the kind of partner you want under your hood.
+            The calm confidence of a premium shop — delivered curbside with cinematic attention to detail.
           </p>
         </SectionReveal>
 

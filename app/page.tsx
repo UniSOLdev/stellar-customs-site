@@ -1,25 +1,26 @@
 import type { Metadata } from "next";
 import { getGalleryImages, getReviews, getServices } from "@/lib/db/public-queries";
 import { HomePageClient } from "@/components/HomePageClient";
-import { SITE, SITE_CANONICAL } from "@/lib/site";
+import { SITE, SITE_CANONICAL, REGIONAL_PITCH } from "@/lib/site";
 import { reviewsForHomeFromDb } from "@/lib/reviews-carousel-data";
 
-const desc = `${SITE.tagline} ${SITE.subline} Mobile Mechanic Alabama, custom automotive lighting Alabama, and on-site vehicle repair Odenville — honest diagnostics and professional lighting installs.`;
+const desc = `${SITE.tagline} ${SITE.subline} ${REGIONAL_PITCH}`;
 
 export const metadata: Metadata = {
-  title: "Mobile Mechanic Alabama | Custom Lighting & On-Site Repair",
+  title: "Luxury Mobile Automotive | South Florida & Alabama Lighting",
   description: desc,
   keywords: [
-    "mobile mechanic Alabama",
-    "custom automotive lighting Alabama",
-    "on-site vehicle repair Odenville",
-    "Odenville mobile mechanic",
-    "automotive lighting install",
+    "luxury automotive customization South Florida",
+    "starlight headliner Alabama",
+    "mobile automotive lighting South Florida",
+    "ambient lighting Boca Raton",
+    "custom Escalade lighting Alabama",
+    "mobile mechanic Miami",
     "Stellar Customs",
   ],
   alternates: { canonical: "/" },
   openGraph: {
-    title: `${SITE.name} | Mobile Mechanic Alabama`,
+    title: `${SITE.shortName} | Luxury Mobile Automotive`,
     description: desc,
     url: SITE_CANONICAL,
     siteName: SITE.name,
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/STELLAR%20CUSTUMS%20LOGO.jpg",
+        url: "/stellar-logo.png",
         width: 1200,
         height: 630,
         alt: SITE.name,

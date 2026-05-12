@@ -4,23 +4,23 @@ import { BookingHelpCta } from "@/components/BookingHelpCta";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Book On-Site Vehicle Repair | Mobile Mechanic Alabama",
-  description: `Schedule ${SITE.name} — mobile mechanic Alabama, custom automotive lighting Alabama, and on-site vehicle repair Odenville. Transparent quotes and professional service.`,
+  title: "Book Luxury Mobile Install | South Florida & Alabama",
+  description: `Schedule ${SITE.name} — concierge mobile diagnostics, starlight headliners, ambient lighting, and on-site repair across South Florida and Alabama. Transparent quotes.`,
   keywords: [
-    "book mobile mechanic Alabama",
-    "on-site vehicle repair Odenville",
-    "custom automotive lighting Alabama",
-    "Stellar Customs booking",
+    "book luxury mobile automotive",
+    "starlight headliner install booking",
+    "mobile automotive lighting South Florida",
+    "Stellar Customs booking Alabama",
   ],
   openGraph: {
-    title: `Book Service | ${SITE.name}`,
-    description: `Schedule on-site repair and lighting consults with ${SITE.name} in ${SITE.location}.`,
+    title: `Book Service | ${SITE.shortName}`,
+    description: `Reserve a white-glove mobile visit with ${SITE.shortName} — Florida and Alabama routes.`,
   },
 };
 
 export default function BookingPage() {
   return (
-    <div className="relative min-h-dvh bg-stellar-black pb-32 pt-28 md:pb-24">
+    <div className="relative min-h-dvh bg-stellar-black pb-40 pt-28 md:pb-24">
       <BookingHelpCta />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Book</p>
@@ -48,8 +48,8 @@ export default function BookingPage() {
               <div className="rounded-2xl border border-white/[0.06] bg-stellar-void/60 p-8">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Coverage</p>
                 <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-                  Mobile service across Odenville, St. Clair County, and nearby Alabama communities — confirm your address
-                  when we reply.
+                  Mobile luxury coverage from Palm Beach and Miami to Birmingham and Huntsville — confirm your address
+                  when we reply so we can route the bay efficiently.
                 </p>
               </div>
             </div>

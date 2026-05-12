@@ -33,6 +33,8 @@ export async function loginAction(formData: FormData) {
     );
   }
 
+  revalidatePath("/", "layout");
+  revalidatePath("/admin");
   redirect(next);
 }
 

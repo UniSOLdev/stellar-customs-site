@@ -3,7 +3,7 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { HERO_LOGO_PATH, SITE } from "@/lib/site";
+import { HERO_LOGO_PATH, LOGO_ASPECT_HEIGHT, LOGO_ASPECT_WIDTH, SITE } from "@/lib/site";
 import { GlowButton } from "@/components/GlowButton";
 import { ParticlesBackground } from "@/components/ParticlesBackground";
 
@@ -29,6 +29,10 @@ export function HeroSection() {
       />
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[min(55vh,440px)] bg-gradient-to-t from-black via-[#02060c]/98 to-transparent"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute left-[14%] top-[58%] h-[min(22vw,200px)] w-[min(42vw,380px)] -translate-y-1/2 rounded-[100%] bg-white/[0.045] blur-[56px] sm:left-[18%]"
         aria-hidden
       />
       <div
@@ -58,15 +62,23 @@ export function HeroSection() {
           transition={{ duration: LOGO_DUR, ease: LOGO_EASE }}
         >
           <div className="relative w-full max-w-md sm:max-w-lg">
-            <div className="relative mx-auto aspect-[5/4] w-[min(82vw,400px)]">
+            <div
+              className="relative mx-auto w-[min(82vw,400px)]"
+              style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
+            >
+              <div
+                className="pointer-events-none absolute -inset-[8%] rounded-[26%] bg-[#3aa0ff]/25 blur-[42px]"
+                aria-hidden
+              />
               <div className="relative h-full w-full" style={logoGlowStyle}>
                 <Image
                   src={HERO_LOGO_PATH}
                   alt={`${SITE.name} logo`}
                   fill
                   priority
-                  className="object-contain"
+                  className="object-contain bg-transparent"
                   sizes="(max-width: 768px) 82vw, 400px"
+                  quality={95}
                 />
               </div>
             </div>
@@ -82,8 +94,9 @@ export function HeroSection() {
                 }}
               >
                 <div
-                  className="relative mx-auto aspect-[5/4] w-full scale-y-[-1] blur-[1.2px]"
+                  className="relative mx-auto w-full scale-y-[-1] blur-[1.2px]"
                   style={{
+                    aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}`,
                     filter:
                       "drop-shadow(0 0 12px rgba(58,160,255,0.45)) drop-shadow(0 0 18px rgba(255,107,0,0.25))",
                   }}
@@ -92,8 +105,9 @@ export function HeroSection() {
                     src={HERO_LOGO_PATH}
                     alt=""
                     fill
-                    className="object-contain object-top"
+                    className="object-contain object-top bg-transparent"
                     sizes="(max-width: 768px) 82vw, 400px"
+                    quality={95}
                     role="presentation"
                   />
                 </div>

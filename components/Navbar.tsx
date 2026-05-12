@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { HERO_LOGO_PATH, SITE, siteTelHref } from "@/lib/site";
+import { HERO_LOGO_PATH, LOGO_ASPECT_HEIGHT, LOGO_ASPECT_WIDTH, SITE, siteTelHref } from "@/lib/site";
 import { FacebookIcon, InstagramIcon } from "@/components/icons/SocialIcons";
 
 const links = [
@@ -68,13 +68,17 @@ export function Navbar() {
     >
       <nav className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-4 lg:px-8">
         <Link href="/" className="flex min-h-[44px] w-fit items-center gap-2 shrink-0 group">
-          <span className="relative h-10 w-10 overflow-hidden rounded-md ring-1 ring-stellar-blue/30 shadow-glow-blue/50">
+          <span
+            className="relative h-10 w-auto shrink-0 rounded-md bg-transparent ring-1 ring-stellar-blue/30 shadow-glow-blue/50"
+            style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
+          >
             <Image
               src={HERO_LOGO_PATH}
               alt={`${SITE.name} logo`}
               fill
-              className="object-contain p-0.5 transition-transform duration-300 group-hover:scale-105"
-              sizes="40px"
+              className="object-contain p-0.5 transition-transform duration-300 group-hover:scale-105 [image-rendering:-webkit-optimize-contrast] bg-transparent drop-shadow-[0_0_1px_rgba(255,255,255,0.08)]"
+              sizes="(max-width: 768px) 120px, 80px"
+              quality={96}
               priority
             />
           </span>

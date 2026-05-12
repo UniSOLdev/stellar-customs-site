@@ -3,10 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { GALLERY_ITEMS, type GalleryCategory } from "@/lib/gallery-data";
+import {
+  GALLERY_ITEMS,
+  GALLERY_CATEGORIES,
+  inferGalleryCategoryFromCaption,
+} from "@/lib/gallery-data";
 import type { GalleryImageRow } from "@/lib/db/types";
-
-const FILTERS: Array<GalleryCategory | "All"> = ["All", "Repairs", "Lighting", "Custom Work", "Diagnostics"];
 
 type Props = {
   dbImages: GalleryImageRow[];
@@ -16,19 +18,24 @@ type Props = {
 
 export function GalleryClient({ dbImages, loadError }: Props) {
   const useLive = dbImages.length > 0;
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
+  const [filter, setFilter] = useState<(typeof GALLERY_CATEGORIES)[number]>("All");
   const [activeId, setActiveId] = useState<string | null>(null);
   const touchRef = useRef<{ x: number; y: number } | null>(null);
 
   const filteredStatic = useMemo(
     () => (filter === "All" ? GALLERY_ITEMS : GALLERY_ITEMS.filter((g) => g.category === filter)),
-    [filter]
+    [filter],
   );
+
+  const filteredDb = useMemo(() => {
+    if (filter === "All") return dbImages;
+    return dbImages.filter((g) => inferGalleryCategoryFromCaption(g.caption) === filter);
+  }, [dbImages, filter]);
 
   const activeStatic = activeId ? GALLERY_ITEMS.find((g) => g.id === activeId) : null;
   const activeDb = activeId ? dbImages.find((g) => g.id === activeId) : null;
   const staticIndex = activeStatic ? filteredStatic.findIndex((g) => g.id === activeStatic.id) : -1;
-  const dbIndex = activeDb ? dbImages.findIndex((g) => g.id === activeDb.id) : -1;
+  const dbIndex = activeDb ? filteredDb.findIndex((g) => g.id === activeDb.id) : -1;
 
   const goNeighborStatic = useCallback(
     (dir: -1 | 1) => {
@@ -36,16 +43,16 @@ export function GalleryClient({ dbImages, loadError }: Props) {
       const next = filteredStatic[staticIndex + dir];
       if (next) setActiveId(next.id);
     },
-    [staticIndex, filteredStatic]
+    [staticIndex, filteredStatic],
   );
 
   const goNeighborDb = useCallback(
     (dir: -1 | 1) => {
-      if (dbIndex < 0 || !dbImages.length) return;
-      const next = dbImages[dbIndex + dir];
+      if (dbIndex < 0 || !filteredDb.length) return;
+      const next = filteredDb[dbIndex + dir];
       if (next) setActiveId(next.id);
     },
-    [dbIndex, dbImages]
+    [dbIndex, filteredDb],
   );
 
   useEffect(() => {
@@ -86,16 +93,16 @@ export function GalleryClient({ dbImages, loadError }: Props) {
   };
 
   return (
-    <div className="min-h-dvh bg-stellar-black pb-24 pt-28">
+    <div className="min-h-dvh bg-stellar-black pb-28 pt-28 md:pb-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Portfolio</p>
         <h1 className="font-display mt-2 text-4xl font-bold text-white sm:text-5xl">Gallery</h1>
-        <p className="mt-4 max-w-2xl text-zinc-400">
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400 sm:text-base">
           {loadError
             ? "We couldn’t load live photos — showing curated placeholders. Try again in a moment."
             : useLive
-              ? "Live photos from your Stellar Customs gallery — tap any shot to open the lightbox."
-              : "Masonry layout with lightbox — swap gradient tiles for your photography when assets are uploaded."}
+              ? "Cinematic installs from South Florida to Alabama — tap any frame for the fullscreen viewer."
+              : "Masonry layout with category filters and lightbox — swap gradient tiles for your photography when assets are ready."}
         </p>
 
         {loadError && !useLive ? (
@@ -104,68 +111,64 @@ export function GalleryClient({ dbImages, loadError }: Props) {
           </div>
         ) : null}
 
-        {!useLive ? (
-          <div className="mt-10 flex flex-wrap gap-2">
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                onClick={() => setFilter(f)}
-                className={`min-h-[44px] rounded-full border px-5 py-3 text-xs font-bold uppercase tracking-wider transition ${
-                  filter === f
-                    ? "border-stellar-blue bg-stellar-blue/20 text-stellar-blue shadow-glow-button"
-                    : "border-white/10 bg-stellar-surface/50 text-zinc-400 hover:border-stellar-blue/40 hover:text-white"
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-        ) : null}
+        <div className="mt-10 flex flex-wrap gap-2">
+          {GALLERY_CATEGORIES.map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFilter(f)}
+              className={`min-h-[44px] rounded-full border px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider transition sm:px-5 sm:text-xs ${
+                filter === f
+                  ? "border-stellar-blue bg-stellar-blue/20 text-stellar-blue shadow-[0_0_20px_rgba(0,180,255,0.25)]"
+                  : "border-white/10 bg-stellar-surface/50 text-zinc-400 hover:border-stellar-blue/40 hover:text-white"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
 
         <div className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3">
           {useLive
-            ? dbImages.map((item) => (
-                <motion.button
-                  type="button"
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.015 }}
-                  transition={{ type: "spring", stiffness: 420, damping: 30 }}
-                  onClick={() => setActiveId(item.id)}
-                  className="group mb-4 w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/5 text-left ring-1 ring-stellar-blue/10"
-                >
-                  <div className="relative aspect-[3/4] bg-zinc-900">
-                    <motion.div
-                      initial={{ opacity: 0.9 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.55 }}
-                      className="absolute inset-0"
-                    >
-                      <Image
-                        src={item.image_url}
-                        alt={item.caption ?? "Gallery"}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    </motion.div>
-                    <div className="absolute inset-0 bg-black/40 transition duration-300 group-hover:bg-black/60" />
-                    <div className="absolute inset-0 flex flex-col justify-end p-5">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-stellar-orange">
-                        Stellar Customs
-                      </span>
-                      <span className="mt-1 text-lg font-semibold text-white">{item.caption || "Project"}</span>
-                      <p className="mt-2 max-w-[95%] text-sm leading-relaxed text-zinc-200 opacity-0 transition duration-300 group-hover:opacity-100">
-                        {item.caption ? "Tap to view larger" : "Gallery image"}
-                      </p>
+            ? filteredDb.map((item) => {
+                const cat = inferGalleryCategoryFromCaption(item.caption);
+                return (
+                  <motion.button
+                    type="button"
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ y: -2 }}
+                    transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                    onClick={() => setActiveId(item.id)}
+                    className="group mb-4 w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/5 text-left ring-1 ring-stellar-blue/10"
+                  >
+                    <div className="relative aspect-[3/4] bg-zinc-900">
+                      <div className="absolute inset-0">
+                        <Image
+                          src={item.image_url}
+                          alt={item.caption ?? "Gallery"}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-90 transition duration-300 group-hover:opacity-100" />
+                      <div className="absolute inset-0 flex flex-col justify-end p-5">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-stellar-orange">
+                          {cat}
+                        </span>
+                        <span className="mt-1 text-lg font-semibold text-white">{item.caption || "Project"}</span>
+                        <p className="mt-2 max-w-[95%] text-sm leading-relaxed text-zinc-200 opacity-0 transition duration-300 group-hover:opacity-100">
+                          Tap to open fullscreen
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </motion.button>
-              ))
+                  </motion.button>
+                );
+              })
             : filteredStatic.map((item) => (
                 <motion.button
                   type="button"
@@ -173,20 +176,13 @@ export function GalleryClient({ dbImages, loadError }: Props) {
                   layout
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.015 }}
-                  transition={{ type: "spring", stiffness: 420, damping: 30 }}
+                  whileHover={{ y: -2 }}
+                  transition={{ type: "spring", stiffness: 420, damping: 32 }}
                   onClick={() => setActiveId(item.id)}
                   className="group mb-4 w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/5 text-left ring-1 ring-stellar-blue/10"
                 >
                   <div className={`relative aspect-[3/4] bg-gradient-to-br ${item.placeholderClass}`}>
-                    <motion.div
-                      initial={{ opacity: 0.9 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.55 }}
-                      className="absolute inset-0"
-                    />
-                    <div className="absolute inset-0 bg-black/40 transition duration-300 group-hover:bg-black/60" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-white/5 opacity-80 transition duration-300 group-hover:opacity-95" />
                     <div className="absolute inset-0 flex flex-col justify-end p-5">
                       <span className="text-[10px] font-bold uppercase tracking-widest text-stellar-orange">
                         {item.category}
@@ -205,7 +201,7 @@ export function GalleryClient({ dbImages, loadError }: Props) {
       <AnimatePresence>
         {activeDb ? (
           <motion.div
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -217,7 +213,7 @@ export function GalleryClient({ dbImages, loadError }: Props) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.96, opacity: 0 }}
               transition={{ type: "spring", stiffness: 280, damping: 28 }}
-              className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl border border-stellar-blue/30 bg-stellar-void shadow-glow-blue"
+              className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl border border-stellar-blue/30 bg-stellar-void shadow-[0_0_40px_rgba(0,180,255,0.2)]"
               onClick={(e) => e.stopPropagation()}
               onTouchStart={(e) => {
                 const p = e.touches[0];
@@ -237,12 +233,15 @@ export function GalleryClient({ dbImages, loadError }: Props) {
                   sizes="100vw"
                 />
                 <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/85 to-transparent p-6 sm:p-8">
-                  <h2 id="lightbox-title-db" className="font-display text-2xl font-bold text-white sm:text-3xl">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-stellar-orange">
+                    {inferGalleryCategoryFromCaption(activeDb.caption)}
+                  </p>
+                  <h2 id="lightbox-title-db" className="font-display mt-2 text-2xl font-bold text-white sm:text-3xl">
                     {activeDb.caption || "Project"}
                   </h2>
                   <p className="mt-3 text-[11px] text-zinc-500">Swipe horizontally for prev/next · swipe down to close</p>
                 </div>
-                {dbImages.length > 1 ? (
+                {filteredDb.length > 1 ? (
                   <>
                     <button
                       type="button"
@@ -286,7 +285,7 @@ export function GalleryClient({ dbImages, loadError }: Props) {
       <AnimatePresence>
         {activeStatic ? (
           <motion.div
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -298,7 +297,7 @@ export function GalleryClient({ dbImages, loadError }: Props) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.96, opacity: 0 }}
               transition={{ type: "spring", stiffness: 280, damping: 28 }}
-              className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl border border-stellar-blue/30 bg-stellar-void shadow-glow-blue"
+              className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl border border-stellar-blue/30 bg-stellar-void shadow-[0_0_40px_rgba(0,180,255,0.2)]"
               onClick={(e) => e.stopPropagation()}
               onTouchStart={(e) => {
                 const p = e.touches[0];
@@ -309,9 +308,27 @@ export function GalleryClient({ dbImages, loadError }: Props) {
               aria-modal
               aria-labelledby="lightbox-title-static"
             >
-              <div className={`relative aspect-video bg-gradient-to-br ${activeStatic.placeholderClass}`}>
-                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/85 to-transparent p-6 sm:p-8">
-                  <p className="text-xs font-bold uppercase tracking-widest text-stellar-orange">{activeStatic.category}</p>
+              <div className="relative aspect-video overflow-hidden bg-zinc-950">
+                {activeStatic.beforeAfter ? (
+                  <div className="absolute inset-0 flex">
+                    <div className="relative w-1/2 bg-gradient-to-br from-zinc-900 to-black">
+                      <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-zinc-400 backdrop-blur-sm">
+                        Before
+                      </span>
+                    </div>
+                    <div className={`relative w-1/2 bg-gradient-to-bl ${activeStatic.placeholderClass}`}>
+                      <span className="absolute right-4 top-4 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-sm">
+                        After
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={`absolute inset-0 bg-gradient-to-br ${activeStatic.placeholderClass}`} />
+                )}
+                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/88 to-transparent p-6 sm:p-8">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-stellar-orange">
+                    {activeStatic.category}
+                  </p>
                   <h2 id="lightbox-title-static" className="font-display mt-2 text-2xl font-bold text-white sm:text-3xl">
                     {activeStatic.title}
                   </h2>
