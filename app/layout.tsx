@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Orbitron } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteChrome } from "@/components/SiteChrome";
 import { SITE, SITE_CANONICAL, BRAND_TAGLINE, SERVICE_CATEGORY_LINE } from "@/lib/site";
@@ -12,12 +12,6 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const orbitron = Orbitron({
-  variable: "--font-orbitron",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const defaultDescription = `${SITE.heroHeadlineSupport}. ${SITE.subline} ${SERVICE_CATEGORY_LINE}`;
@@ -68,7 +62,7 @@ export default function RootLayout({
         <meta property="article:publisher" content={SITE.facebook} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} font-sans min-h-dvh flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans min-h-dvh flex flex-col`}
       >
         <SiteChrome>{children}</SiteChrome>
       </body>

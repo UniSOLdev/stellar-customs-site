@@ -7,7 +7,6 @@ type Base = {
   children: React.ReactNode;
   className?: string;
   variant?: "primary" | "outline";
-  /** Full width on small screens for easier tapping. */
   fullWidthMobile?: boolean;
 };
 
@@ -15,13 +14,13 @@ type LinkProps = Base & { href: string; type?: never };
 type ButtonProps = Base & { onClick?: () => void; type?: "button" | "submit" };
 
 const base =
-  "relative inline-flex items-center justify-center overflow-hidden rounded-full px-7 py-3 text-sm font-semibold uppercase tracking-widest transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stellar-blue min-h-[48px] sm:min-h-0";
+  "relative inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-medium tracking-normal transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/40 min-h-[48px] sm:min-h-[44px]";
 
 const variants = {
   primary:
-    "bg-gradient-to-r from-stellar-blue-deep to-stellar-blue text-black shadow-glow-button animate-pulse-glow transition-shadow duration-300 hover:from-stellar-blue hover:to-cyan-300 hover:shadow-[0_0_32px_rgba(58,160,255,0.4)]",
+    "bg-white text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200",
   outline:
-    "border border-stellar-blue/50 bg-stellar-black/40 text-stellar-blue backdrop-blur-sm transition-shadow duration-300 hover:border-stellar-blue hover:bg-stellar-blue/10 hover:shadow-[0_0_24px_rgba(58,160,255,0.22)]",
+    "border border-white/[0.14] bg-white/[0.03] text-white backdrop-blur-sm hover:bg-white/[0.06] hover:border-white/20",
 };
 
 export function GlowButton(props: LinkProps | ButtonProps) {
@@ -31,34 +30,17 @@ export function GlowButton(props: LinkProps | ButtonProps) {
 
   if ("href" in props) {
     return (
-      <motion.div
-        whileHover={{ y: -2 }}
-        whileTap={{ scale: 0.98 }}
-        className={props.fullWidthMobile ? "w-full sm:w-auto" : undefined}
-      >
+      <motion.div whileTap={{ scale: 0.99 }} className={props.fullWidthMobile ? "w-full sm:w-auto" : undefined}>
         <Link href={props.href} className={cls}>
-          <span className="relative z-10">{props.children}</span>
-          <span
-            className="pointer-events-none absolute inset-0 opacity-30"
-            style={{
-              background:
-                "radial-gradient(circle at 50% 0%, rgba(255,255,255,0.35), transparent 55%)",
-            }}
-          />
+          {props.children}
         </Link>
       </motion.div>
     );
   }
 
   return (
-    <motion.button
-      type={props.type ?? "button"}
-      onClick={props.onClick}
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.98 }}
-      className={cls}
-    >
-      <span className="relative z-10">{props.children}</span>
+    <motion.button type={props.type ?? "button"} onClick={props.onClick} whileTap={{ scale: 0.99 }} className={cls}>
+      {props.children}
     </motion.button>
   );
 }

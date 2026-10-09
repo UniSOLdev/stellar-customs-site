@@ -70,11 +70,8 @@ export function ReviewsCarousel({ reviews }: Props) {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(0,180,255,0.06),transparent)]" aria-hidden />
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <SectionReveal>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Clients</p>
-          <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">What people say</h2>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-400">
-            Real reviews from Palm Beach County clients — synced from your database when live reviews are available.
-          </p>
+          <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Reviews</h2>
+          <p className="mt-2 max-w-xl text-sm text-zinc-500">From verified clients when live data is connected.</p>
         </SectionReveal>
 
         <div

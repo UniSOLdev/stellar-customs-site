@@ -19,6 +19,8 @@ import { FloridaConditionsSection } from "@/components/home/FloridaConditionsSec
 import { SignatureOffersSection } from "@/components/home/SignatureOffersSection";
 import { CustomerJourneySection } from "@/components/home/CustomerJourneySection";
 import { PILLAR_META, servicesByPillar } from "@/lib/business/services-catalog";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { GlassCard } from "@/components/ui/GlassCard";
 import type { GalleryImageRow } from "@/lib/db/types";
 import type { HomeReviewSlide } from "@/lib/reviews-carousel-data";
 import type { ServicePillar } from "@/lib/business/types";
@@ -54,40 +56,40 @@ export function HomePageClient({ galleryPreview, galleryLoadError, initialReview
       <StatsBarSection />
       <ReviewsCarousel reviews={initialReviews} />
 
-      <section className="relative border-t border-stellar-blue/10 bg-stellar-void py-20 sm:py-28">
+      <section className="border-t border-white/[0.06] py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Services</p>
-            <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">Palm Beach County vehicle care</h2>
-            <p className="mt-3 max-w-xl text-zinc-400">
-              From a $200 maintenance detail to a multi-day starlight or restoration project — one team, clear quoting.
-            </p>
-            <div className="mt-6">
+            <SectionHeader
+              eyebrow="Index"
+              title="Service menu"
+              description="Maintenance through multi-day restoration and custom interiors — scoped per vehicle."
+            />
+            <div className="mt-8">
               <GlowButton href="/services" variant="outline" fullWidthMobile>
-                Full services hub
+                View all services
               </GlowButton>
             </div>
           </SectionReveal>
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-2">
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
             {pillarPreview.map((pillar, pi) => {
               const meta = PILLAR_META[pillar];
               const items = servicesByPillar(pillar).slice(0, 4);
               return (
                 <SectionReveal key={pillar} delay={pi * 0.06}>
-                  <div className="rounded-2xl border border-white/10 bg-stellar-surface/70 p-6">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-stellar-orange">{meta.order}</p>
-                    <h3 className="font-display mt-2 text-xl font-bold text-white">{meta.title}</h3>
+                  <GlassCard>
+                    <p className="text-xs text-zinc-600">{meta.order}</p>
+                    <h3 className="mt-1 text-lg font-semibold text-white">{meta.title}</h3>
                     <ul className="mt-4 space-y-2">
                       {items.map((s) => (
                         <li key={s.slug}>
-                          <Link href={`/${s.slug}`} className="text-sm text-zinc-300 hover:text-stellar-blue">
+                          <Link href={`/${s.slug}`} className="text-sm text-zinc-400 hover:text-white">
                             {s.shortTitle}
                           </Link>
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </GlassCard>
                 </SectionReveal>
               );
             })}
@@ -95,20 +97,17 @@ export function HomePageClient({ galleryPreview, galleryLoadError, initialReview
         </div>
       </section>
 
-      <section className="relative border-t border-stellar-blue/10 bg-stellar-void py-20 sm:py-28">
+      <section className="border-t border-white/[0.06] py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="flex w-full flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Portfolio</p>
-                <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">Before / after</h2>
-                <p className="mt-3 max-w-xl text-zinc-400">
-                  Real project photos populate here as you add jobs — structure ready for local SEO titles like make +
-                  service + city.
-                </p>
-              </div>
+              <SectionHeader
+                eyebrow="Work"
+                title="Before and after"
+                description="Project photography from your gallery appears here as jobs are published."
+              />
               <GlowButton href="/gallery" variant="outline" fullWidthMobile>
-                View gallery
+                Gallery
               </GlowButton>
             </div>
           </SectionReveal>
@@ -154,29 +153,26 @@ export function HomePageClient({ galleryPreview, galleryLoadError, initialReview
 
       <ServiceAreasSection />
 
-      <section className="relative py-20 sm:py-28">
-        <div className="absolute inset-0 bg-gradient-to-b from-stellar-void via-stellar-black to-stellar-void" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <h2 className="font-display text-3xl font-bold text-white">From Jupiter to Boca — Stellar comes to you</h2>
-            <p className="mt-4 max-w-2xl text-zinc-400">
-              Gated communities, offices, and driveways across Palm Beach County. Studio booking for starlights,
-              correction, and multi-day restoration.
-            </p>
+            <SectionHeader
+              title="Mobile service, Palm Beach County"
+              description="Residences, offices, and gated communities from Jupiter to Boca. Studio appointments for correction, ceramic, and headliner installs."
+            />
           </SectionReveal>
-          <SectionReveal className="mt-10">
+          <SectionReveal className="mt-8">
             <GlowButton href="/quote" fullWidthMobile>
-              Get My Quote
+              Request a quote
             </GlowButton>
           </SectionReveal>
         </div>
       </section>
 
-      <section className="border-t border-stellar-blue/10 bg-stellar-void py-20 sm:py-28">
+      <section className="border-t border-white/[0.06] py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Store</p>
-            <h2 className="font-display mt-2 text-3xl font-bold text-white">Products &amp; kits</h2>
+            <SectionHeader eyebrow="Shop" title="Products and kits" />
           </SectionReveal>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {productCategories.map((cat, i) => (

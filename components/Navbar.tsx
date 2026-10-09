@@ -105,13 +105,11 @@ export function Navbar() {
             >
               <Image src={HERO_LOGO_PATH} alt={`${SITE.shortName} logo`} fill className="object-contain p-0.5" sizes="120px" priority />
             </span>
-            <span className="font-display text-sm font-bold tracking-wide text-white">
-              STELLAR<span className="text-stellar-blue">CUSTOMS</span>
-            </span>
+            <span className="text-sm font-semibold tracking-tight text-white">Stellar Customs</span>
           </Link>
 
           <div className="flex flex-wrap items-center justify-end gap-x-1 gap-y-2">
-            <ul className="flex flex-wrap items-center gap-x-1 text-xs font-medium uppercase tracking-wider text-zinc-300">
+            <ul className="flex flex-wrap items-center gap-x-1 text-sm text-zinc-400">
               {links.map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="rounded-md px-2.5 py-2 hover:text-stellar-blue">
@@ -188,7 +186,7 @@ export function Navbar() {
               <div className="mt-auto space-y-3 border-t border-white/10 pt-6">
                 <Link
                   href="/quote"
-                  className="flex min-h-[48px] items-center justify-center rounded-xl bg-gradient-to-r from-stellar-blue-deep to-stellar-blue text-sm font-bold uppercase tracking-wider text-black"
+                  className="flex min-h-[48px] items-center justify-center rounded-xl bg-white text-sm font-medium text-zinc-950"
                   onClick={() => setMenuOpen(false)}
                 >
                   Get My Quote

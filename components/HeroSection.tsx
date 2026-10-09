@@ -1,6 +1,5 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -13,137 +12,92 @@ import {
   siteTelHref,
 } from "@/lib/site";
 import { GlowButton } from "@/components/GlowButton";
-import { ParticlesBackground } from "@/components/ParticlesBackground";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const logoGlowMobile: CSSProperties = {
-  filter: "drop-shadow(0 0 24px rgba(58,160,255,0.35))",
-};
-
-const logoGlowDesktop: CSSProperties = {
-  filter: [
-    "drop-shadow(0 0 20px rgba(58,160,255,0.95))",
-    "drop-shadow(0 0 48px rgba(58,160,255,0.5))",
-    "drop-shadow(0 0 8px rgba(255,107,0,0.9))",
-  ].join(" "),
-};
-
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-[calc(100dvh-3.5rem)] flex-col justify-end overflow-hidden px-4 pb-32 pt-[calc(3.5rem+env(safe-area-inset-top)+1.25rem)] md:min-h-dvh md:justify-center md:pb-24 md:pt-24">
-      <div className="absolute inset-0 bg-black" aria-hidden />
-      <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_100%_70%_at_50%_0%,#122035_0%,#060a10_45%,#000_100%)]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black to-transparent md:h-64"
-        aria-hidden
-      />
-      <ParticlesBackground density="sparse" className="opacity-40 md:opacity-[0.55]" />
+    <section className="relative flex min-h-[calc(100dvh-3.5rem)] flex-col justify-center overflow-hidden px-4 pb-28 pt-[calc(3.5rem+env(safe-area-inset-top)+0.75rem)] md:min-h-dvh md:pb-24 md:pt-24">
+      <div className="absolute inset-0 bg-[#050506]" aria-hidden />
+      <div className="mist-bg" aria-hidden />
+      <div className="hero-vignette" aria-hidden />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col md:items-center md:text-center">
-        {/* Mobile: message-first for faster comprehension */}
-        <motion.p
-          className="text-[11px] font-semibold uppercase tracking-[0.28em] text-stellar-blue md:order-2 md:mt-8 md:text-xs md:tracking-[0.35em]"
-          initial={{ opacity: 0, y: 10 }}
+      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center text-center">
+        <motion.div
+          className="relative w-[min(44vw,180px)] md:w-[min(56vw,280px)]"
+          style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: EASE }}
+          transition={{ duration: 0.65, ease: EASE }}
+        >
+          <Image
+            src={HERO_LOGO_PATH}
+            alt={`${SITE.shortName} logo`}
+            fill
+            priority
+            className="object-contain drop-shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+            sizes="(max-width: 768px) 180px, 280px"
+          />
+        </motion.div>
+
+        <motion.p
+          className="mt-8 text-sm font-medium text-zinc-500"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.08, duration: 0.5, ease: EASE }}
         >
           {SITE.heroHeadlineSupport}
         </motion.p>
 
         <motion.h1
-          className="font-display mt-3 max-w-xl text-balance text-[1.65rem] font-bold leading-tight tracking-[0.04em] text-white sm:text-3xl md:order-3 md:mt-4 md:max-w-3xl md:text-4xl md:tracking-[0.08em]"
-          initial={{ opacity: 0, y: 14 }}
+          className="mt-3 max-w-xl text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl md:max-w-2xl md:text-[2.75rem] md:leading-[1.1]"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.06, duration: 0.55, ease: EASE }}
+          transition={{ delay: 0.12, duration: 0.55, ease: EASE }}
         >
           {BRAND_TAGLINE}
         </motion.h1>
 
         <motion.p
-          className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-zinc-400 md:order-4 md:text-base md:text-white/65"
-          initial={{ opacity: 0, y: 12 }}
+          className="mt-5 max-w-lg text-pretty text-base leading-relaxed text-zinc-400"
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.12, duration: 0.5, ease: EASE }}
+          transition={{ delay: 0.18, duration: 0.5, ease: EASE }}
         >
           {SITE.subline}
         </motion.p>
 
         <motion.div
-          className="mt-8 flex w-full max-w-md flex-col gap-3 md:order-5 md:mx-auto md:mt-10 md:flex-row md:justify-center"
-          initial={{ opacity: 0, y: 16 }}
+          className="mt-9 flex w-full max-w-sm flex-col gap-3 sm:max-w-md sm:flex-row sm:justify-center"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
+          transition={{ delay: 0.24, duration: 0.5, ease: EASE }}
         >
-          <GlowButton href="/quote" fullWidthMobile className="!rounded-xl !animate-none shadow-[0_0_28px_rgba(58,160,255,0.25)]">
-            Get a Quote
+          <GlowButton href="/quote" fullWidthMobile>
+            Get a quote
           </GlowButton>
-          <GlowButton href="/services" variant="outline" fullWidthMobile className="!rounded-xl !animate-none">
-            Explore Services
+          <GlowButton href="/services" variant="outline" fullWidthMobile>
+            Services
           </GlowButton>
         </motion.div>
 
         <motion.p
-          className="mt-5 hidden text-xs text-zinc-500 md:order-6 md:block"
+          className="mt-6 text-xs text-zinc-600"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.35 }}
+          transition={{ delay: 0.32 }}
         >
-          Mobile across Palm Beach County · Studio for starlights, correction &amp; ceramic
+          Mobile throughout the county · Studio for multi-day work
         </motion.p>
 
-        {/* Desktop: call/text inline; mobile uses sticky bar only */}
-        <motion.div
-          className="mt-6 hidden flex-wrap items-center justify-center gap-3 md:order-7 md:flex"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <a
-            href={siteTelHref()}
-            className="min-h-[44px] rounded-lg border border-white/15 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-200 hover:border-stellar-blue/50"
-          >
-            Call
+        <motion.div className="mt-5 hidden gap-4 md:flex" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.36 }}>
+          <a href={siteTelHref()} className="text-sm text-zinc-500 transition hover:text-white">
+            {SITE.phone}
           </a>
-          <a
-            href={siteSmsHref("Stellar Customs — quote for ")}
-            className="min-h-[44px] rounded-lg border border-white/15 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-200 hover:border-stellar-blue/50"
-          >
+          <span className="text-zinc-700">·</span>
+          <a href={siteSmsHref()} className="text-sm text-zinc-500 transition hover:text-white">
             Text
           </a>
-        </motion.div>
-
-        <motion.div
-          className="relative mx-auto mt-10 w-[min(52vw,220px)] md:order-1 md:mt-0 md:w-[min(72vw,360px)]"
-          style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.08, duration: 0.7, ease: EASE }}
-        >
-          <div className="relative h-full w-full md:hidden" style={logoGlowMobile}>
-            <Image
-              src={HERO_LOGO_PATH}
-              alt=""
-              fill
-              priority
-              className="object-contain opacity-90"
-              sizes="220px"
-              aria-hidden
-            />
-          </div>
-          <div className="relative hidden h-full w-full md:block" style={logoGlowDesktop}>
-            <Image
-              src={HERO_LOGO_PATH}
-              alt={`${SITE.shortName} logo`}
-              fill
-              priority
-              className="object-contain"
-              sizes="360px"
-            />
-          </div>
         </motion.div>
       </div>
     </section>
