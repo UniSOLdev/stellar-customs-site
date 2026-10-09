@@ -1,25 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HERO_LOGO_PATH, LOGO_ASPECT_HEIGHT, LOGO_ASPECT_WIDTH, SITE, siteTelHref, siteSmsHref } from "@/lib/site";
+import { SITE, siteTelHref, siteSmsHref } from "@/lib/site";
 import { FacebookIcon, InstagramIcon } from "@/components/icons/SocialIcons";
 
 const links = [
-  { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/quote", label: "Get a Quote" },
+  { href: "/gallery", label: "Work" },
   { href: "/reviews", label: "Reviews" },
-  { href: "/shop", label: "Shop" },
   { href: "/contact", label: "Contact" },
 ];
-
-const chipBase =
-  "inline-flex min-h-[40px] shrink-0 items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition sm:px-3.5 sm:text-xs";
 
 function MenuIcon({ open }: { open: boolean }) {
   return (
@@ -62,8 +55,8 @@ export function Navbar() {
 
   const headerBg =
     solid || menuOpen
-      ? "bg-stellar-black/95 border-b border-stellar-blue/15 shadow-lg shadow-black/40 backdrop-blur-md"
-      : "bg-stellar-black/85 backdrop-blur-md md:bg-transparent md:backdrop-blur-none";
+      ? "border-b border-white/[0.07] bg-[#070708]/90 backdrop-blur-xl"
+      : "bg-[#050506]/72 backdrop-blur-lg md:bg-transparent";
 
   return (
     <>
@@ -76,17 +69,12 @@ export function Navbar() {
       >
         {/* Mobile: single compact bar */}
         <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:h-auto sm:px-6 sm:py-4 lg:px-8 md:hidden">
-          <Link href="/" className="flex min-h-[44px] min-w-[44px] items-center" onClick={() => setMenuOpen(false)}>
-            <span
-              className="relative h-9 w-auto shrink-0"
-              style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
-            >
-              <Image src={HERO_LOGO_PATH} alt={`${SITE.shortName} logo`} fill className="object-contain" sizes="80px" priority />
-            </span>
+          <Link href="/" className="flex min-h-[44px] items-center text-sm font-semibold tracking-tight text-white" onClick={() => setMenuOpen(false)}>
+            Stellar Customs
           </Link>
           <button
             type="button"
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-white/10 bg-white/5"
+            className="inline-flex min-h-[42px] min-w-[42px] items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.03]"
             aria-expanded={menuOpen}
             aria-controls="mobile-nav-panel"
             onClick={() => setMenuOpen((o) => !o)}
@@ -98,40 +86,23 @@ export function Navbar() {
 
         {/* Desktop */}
         <nav className="mx-auto hidden max-w-7xl flex-row items-center justify-between gap-4 px-6 py-4 lg:px-8 md:flex">
-          <Link href="/" className="flex shrink-0 items-center gap-2 group">
-            <span
-              className="relative h-10 w-auto shrink-0 rounded-md ring-1 ring-stellar-blue/30"
-              style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
-            >
-              <Image src={HERO_LOGO_PATH} alt={`${SITE.shortName} logo`} fill className="object-contain p-0.5" sizes="120px" priority />
-            </span>
-            <span className="text-sm font-semibold tracking-tight text-white">Stellar Customs</span>
+          <Link href="/" className="text-sm font-semibold tracking-tight text-white">
+            Stellar Customs
           </Link>
 
-          <div className="flex flex-wrap items-center justify-end gap-x-1 gap-y-2">
-            <ul className="flex flex-wrap items-center gap-x-1 text-sm text-zinc-400">
+          <div className="flex items-center gap-5">
+            <ul className="flex items-center gap-1 text-sm text-zinc-500">
               {links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="rounded-md px-2.5 py-2 hover:text-stellar-blue">
+                  <Link href={l.href} className="rounded-lg px-3 py-2 transition hover:bg-white/[0.04] hover:text-white">
                     {l.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="ml-2 flex items-center gap-1.5 border-l border-white/10 pl-3">
-              <a href={siteTelHref()} className={`${chipBase} border border-stellar-blue/45 bg-stellar-blue/10 text-stellar-blue`}>
-                Call
-              </a>
-              <a href={siteSmsHref()} className={`${chipBase} border border-white/15 text-zinc-200`}>
-                Text
-              </a>
-              <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-zinc-400 hover:text-stellar-orange">
-                <InstagramIcon className="h-[17px] w-[17px]" aria-hidden />
-              </a>
-              <a href={SITE.facebook} target="_blank" rel="noopener noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-zinc-400 hover:text-[#1877F2]">
-                <FacebookIcon className="h-[17px] w-[17px]" aria-hidden />
-              </a>
-            </div>
+            <Link href="/quote" className="rounded-xl bg-white px-4 py-2.5 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200">
+              Request a quote
+            </Link>
           </div>
         </nav>
       </motion.header>
@@ -159,7 +130,7 @@ export function Navbar() {
               transition={{ type: "spring", stiffness: 380, damping: 36 }}
             >
               <div className="flex items-center justify-between">
-                <span className="font-display text-sm font-bold text-white">Menu</span>
+                <span className="text-sm font-semibold text-white">Stellar Customs</span>
                 <button
                   type="button"
                   className="min-h-[44px] min-w-[44px] rounded-lg border border-white/10 text-sm text-zinc-400"
@@ -174,7 +145,7 @@ export function Navbar() {
                   <li key={l.href}>
                     <Link
                       href={l.href}
-                      className="flex min-h-[48px] items-center rounded-xl px-3 text-sm font-semibold uppercase tracking-wider text-zinc-200 hover:bg-white/5 hover:text-stellar-blue"
+                      className="flex min-h-[48px] items-center rounded-xl px-3 text-base text-zinc-300 hover:bg-white/[0.04] hover:text-white"
                       onClick={() => setMenuOpen(false)}
                     >
                       {l.label}
@@ -189,13 +160,13 @@ export function Navbar() {
                   className="flex min-h-[48px] items-center justify-center rounded-xl bg-white text-sm font-medium text-zinc-950"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Get My Quote
+                  Request a quote
                 </Link>
                 <div className="grid grid-cols-2 gap-2">
-                  <a href={siteTelHref()} className="flex min-h-[44px] items-center justify-center rounded-xl border border-white/15 text-xs font-bold uppercase text-white">
+                  <a href={siteTelHref()} className="flex min-h-[44px] items-center justify-center rounded-xl border border-white/10 text-sm text-zinc-300">
                     Call
                   </a>
-                  <a href={siteSmsHref()} className="flex min-h-[44px] items-center justify-center rounded-xl border border-white/15 text-xs font-bold uppercase text-white">
+                  <a href={siteSmsHref()} className="flex min-h-[44px] items-center justify-center rounded-xl border border-white/10 text-sm text-zinc-300">
                     Text
                   </a>
                 </div>

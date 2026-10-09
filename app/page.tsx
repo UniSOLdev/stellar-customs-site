@@ -35,7 +35,6 @@ export default async function HomePage() {
   return (
     <HomePageClient
       galleryPreview={galleryRes.data}
-      galleryLoadError={galleryRes.error}
       initialReviews={initialReviews}
     />
   );

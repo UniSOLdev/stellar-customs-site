@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { GlowButton } from "@/components/GlowButton";
 import { SectionReveal } from "@/components/SectionReveal";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { formatPrice, fulfillmentLabel, PILLAR_META, servicesByPillar } from "@/lib/business/services-catalog";
 import type { ServicePillar } from "@/lib/business/types";
 import { SITE, BRAND_TAGLINE, absoluteUrl } from "@/lib/site";
-import { STELLAR_STUDIO } from "@/lib/business/studio";
 
 export const metadata: Metadata = {
   title: "Services | Auto Detailing, Restoration & Customization — Palm Beach County",
@@ -22,58 +22,61 @@ const PILLARS: ServicePillar[] = ["detail", "restore", "protect", "customize"];
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-dvh bg-stellar-black pb-40 pt-28 md:pb-24">
+    <div className="min-h-dvh pb-32 pt-24 md:pb-24 md:pt-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Services</p>
-        <h1 className="font-display mt-3 text-4xl font-bold text-white sm:text-5xl">{BRAND_TAGLINE}</h1>
-        <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-400">
-          Four ways we improve your vehicle in South Florida — from mobile maintenance details to studio restoration,
-          correction, ceramic protection, and custom cabins.
-        </p>
-        <div className="mt-8">
-          <GlowButton href="/quote">Get My Quote</GlowButton>
+        <div className="max-w-3xl">
+          <p className="text-sm font-medium text-zinc-500">Services</p>
+          <h1 className="mt-3 text-balance text-4xl font-semibold tracking-tight text-white sm:text-6xl">{BRAND_TAGLINE}</h1>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+            Mobile maintenance and detailing. Studio restoration, paint correction, ceramic protection, and custom interior work.
+          </p>
+          <div className="mt-8">
+            <GlowButton href="/quote">Request a quote</GlowButton>
+          </div>
         </div>
 
-        {!STELLAR_STUDIO.published ? (
-          <p className="mt-10 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 text-sm text-zinc-500">
-            <span className="font-semibold text-zinc-400">{STELLAR_STUDIO.name}</span> —{" "}
-            {STELLAR_STUDIO.areaLabel} studio coming soon. Multi-day installs and correction booked after lease
-            confirmation.
-          </p>
-        ) : null}
+        <nav className="mt-12 flex flex-wrap gap-2 border-y border-white/[0.07] py-4" aria-label="Service categories">
+          {PILLARS.map((pillar) => (
+            <a
+              key={pillar}
+              href={`#${pillar}`}
+              className="rounded-full border border-white/[0.08] bg-white/[0.02] px-4 py-2 text-sm text-zinc-400 transition hover:border-white/15 hover:text-white"
+            >
+              {PILLAR_META[pillar].title}
+            </a>
+          ))}
+        </nav>
 
-        <div className="mt-16 space-y-20">
+        <div className="mt-20 space-y-24">
           {PILLARS.map((pillar) => {
             const meta = PILLAR_META[pillar];
             const items = servicesByPillar(pillar);
             return (
               <section key={pillar} id={pillar} className="scroll-mt-28">
                 <SectionReveal>
-                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-stellar-orange">{meta.order}</p>
-                  <h2 className="font-display mt-2 text-3xl font-bold text-white">{meta.title}</h2>
-                  <p className="mt-2 text-stellar-blue/90">{meta.verb}</p>
-                  <p className="mt-3 max-w-2xl text-sm text-zinc-400">{meta.summary}</p>
+                  <SectionHeader
+                    eyebrow={`${meta.order} / ${meta.title}`}
+                    title={meta.verb}
+                    description={meta.summary}
+                  />
                 </SectionReveal>
 
-                <div className="mt-10 grid gap-4 lg:grid-cols-2">
+                <div className="mt-10 divide-y divide-white/[0.07] border-y border-white/[0.07]">
                   {items.map((s, i) => (
                     <SectionReveal key={s.slug} delay={i * 0.04}>
                       <Link
                         href={`/${s.slug}`}
-                        className="group block h-full rounded-2xl border border-white/10 bg-stellar-surface/50 p-6 transition hover:border-stellar-blue/30"
+                        className="group grid gap-4 py-6 transition sm:grid-cols-[1fr_11rem_7rem_auto] sm:items-center"
                       >
-                        <div className="flex flex-wrap items-start justify-between gap-2">
-                          <h3 className="font-display text-lg font-semibold text-white group-hover:text-stellar-blue">
-                            {s.shortTitle}
-                          </h3>
-                          <span className="text-xs font-bold uppercase tracking-wider text-stellar-blue">
-                            {formatPrice(s)}
-                          </span>
+                        <div>
+                          <h3 className="text-base font-medium text-white">{s.shortTitle}</h3>
+                          <p className="mt-1 max-w-xl text-sm leading-relaxed text-zinc-500">{s.problemSolved}</p>
                         </div>
-                        <p className="mt-3 text-sm text-zinc-400 line-clamp-2">{s.problemSolved}</p>
-                        <p className="mt-4 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                        <p className="text-sm text-zinc-400">{formatPrice(s)}</p>
+                        <p className="text-sm text-zinc-600">
                           {fulfillmentLabel(s.fulfillment)}
                         </p>
+                        <span className="text-zinc-600 transition group-hover:translate-x-1 group-hover:text-white" aria-hidden>→</span>
                       </Link>
                     </SectionReveal>
                   ))}

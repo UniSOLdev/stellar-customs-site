@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Buffer } from "node:buffer";
+import { randomUUID } from "node:crypto";
 import { getOwnerSession } from "@/lib/auth/owner";
 import { createClient } from "@/lib/supabase/server";
 import { pathInBucketFromPublicUrl } from "@/lib/storage-path";
@@ -97,15 +98,55 @@ export async function createQuoteAction(
   const notesRaw = String(formData.get("notes") ?? "").trim();
 
   const sms = formData.get("sms_callback_consent") === "yes";
-  const photos = formData.getAll("photos");
-  const photoNames: string[] = [];
-  for (const p of photos) {
-    if (p instanceof File && p.size > 0) photoNames.push(p.name);
-  }
+  const photos = formData
+    .getAll("photos")
+    .filter((p): p is File => p instanceof File && p.size > 0);
   // Also support single "photo" from legacy booking form
   const legacyPhoto = formData.get("photo");
   if (legacyPhoto instanceof File && legacyPhoto.size > 0) {
-    photoNames.push(legacyPhoto.name);
+    photos.push(legacyPhoto);
+  }
+
+  if (photos.length > 6) {
+    return { ok: false, message: "Upload up to 6 photos per request." };
+  }
+
+  const allowedImageTypes = new Set([
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/heic",
+    "image/heif",
+  ]);
+  for (const photo of photos) {
+    if (!allowedImageTypes.has(photo.type)) {
+      return { ok: false, message: `${photo.name} is not a supported image format.` };
+    }
+    if (photo.size > 10 * 1024 * 1024) {
+      return { ok: false, message: `${photo.name} is larger than 10 MB.` };
+    }
+  }
+
+  const uploadGroup = randomUUID();
+  const uploadedPhotoPaths: string[] = [];
+  for (let index = 0; index < photos.length; index += 1) {
+    const photo = photos[index]!;
+    const extension = photo.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const objectPath = `${uploadGroup}/${index + 1}-${randomUUID()}.${extension}`;
+    const { error: uploadError } = await supabase.storage
+      .from("quote-uploads")
+      .upload(objectPath, Buffer.from(await photo.arrayBuffer()), {
+        contentType: photo.type,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      return {
+        ok: false,
+        message: "We could not upload your photos. Please try again or submit without photos.",
+      };
+    }
+    uploadedPhotoPaths.push(objectPath);
   }
 
   const metaLines = [
@@ -113,7 +154,7 @@ export async function createQuoteAction(
     `Vehicle size: ${size}`,
     `Condition: ${condition}`,
     `Fulfillment: ${fulfillment}`,
-    photoNames.length ? `Photos (pending upload): ${photoNames.join(", ")}` : null,
+    uploadedPhotoPaths.length ? `Photo files: ${uploadedPhotoPaths.join(", ")}` : null,
     sms ? "SMS callback: consented." : "SMS callback: not consented.",
   ].filter(Boolean);
 
