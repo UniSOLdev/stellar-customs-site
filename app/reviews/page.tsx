@@ -7,17 +7,17 @@ import { reviewsJsonLdGraph } from "@/lib/reviewsJsonLd";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Reviews | Luxury Mobile Automotive — South Florida & Alabama",
-  description: `Verified customer reviews for ${SITE.name} — luxury mobile installs, ambient lighting, and concierge repair across South Florida and Alabama.`,
+  title: "Reviews | Palm Beach County Detailing & Customization",
+  description: `Customer reviews for ${SITE.name} — mobile detailing, restoration, ceramic protection, and custom interior work in Palm Beach County.`,
   keywords: [
     "Stellar Customs reviews",
-    "luxury mobile automotive reviews Miami",
-    "mobile mechanic reviews Birmingham",
+    "auto detailing reviews West Palm Beach",
+    "mobile detailing reviews Palm Beach County",
     "Facebook verified reviews",
   ],
   openGraph: {
     title: `Reviews | ${SITE.shortName}`,
-    description: `See what clients say about ${SITE.shortName} mobile luxury service and lighting installs.`,
+    description: `See what clients say about ${SITE.shortName} in Palm Beach County.`,
   },
 };
 

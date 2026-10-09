@@ -73,6 +73,72 @@ export async function createBookingAction(
   return { ok: true };
 }
 
+/** Primary quote flow — stores rich context in notes + vehicle/service fields. */
+export async function createQuoteAction(
+  _prev: { ok: boolean; message?: string } | null,
+  formData: FormData
+): Promise<{ ok: boolean; message?: string }> {
+  const supabase = await createClient();
+  const services = formData.getAll("services").map((s) => String(s)).filter(Boolean);
+  if (services.length === 0) {
+    return { ok: false, message: "Select at least one service." };
+  }
+
+  const year = String(formData.get("vehicle_year") ?? "").trim();
+  const make = String(formData.get("vehicle_make") ?? "").trim();
+  const model = String(formData.get("vehicle_model") ?? "").trim();
+  const vehicle = [year, make, model].filter(Boolean).join(" ") || null;
+
+  const city = String(formData.get("city") ?? "").trim();
+  const zip = String(formData.get("zip") ?? "").trim();
+  const size = String(formData.get("vehicle_size") ?? "").trim();
+  const condition = String(formData.get("condition") ?? "").trim();
+  const fulfillment = String(formData.get("fulfillment") ?? "").trim();
+  const notesRaw = String(formData.get("notes") ?? "").trim();
+
+  const sms = formData.get("sms_callback_consent") === "yes";
+  const photos = formData.getAll("photos");
+  const photoNames: string[] = [];
+  for (const p of photos) {
+    if (p instanceof File && p.size > 0) photoNames.push(p.name);
+  }
+  // Also support single "photo" from legacy booking form
+  const legacyPhoto = formData.get("photo");
+  if (legacyPhoto instanceof File && legacyPhoto.size > 0) {
+    photoNames.push(legacyPhoto.name);
+  }
+
+  const metaLines = [
+    `City/ZIP: ${city}${zip ? ` ${zip}` : ""}`,
+    `Vehicle size: ${size}`,
+    `Condition: ${condition}`,
+    `Fulfillment: ${fulfillment}`,
+    photoNames.length ? `Photos (pending upload): ${photoNames.join(", ")}` : null,
+    sms ? "SMS callback: consented." : "SMS callback: not consented.",
+  ].filter(Boolean);
+
+  const notesCombined = [notesRaw, ...metaLines].filter(Boolean).join("\n") || null;
+
+  const payload = {
+    name: String(formData.get("name") ?? "").trim() || null,
+    phone: String(formData.get("phone") ?? "").trim() || null,
+    email: String(formData.get("email") ?? "").trim() || null,
+    vehicle,
+    service: services.join(", "),
+    date: String(formData.get("date") ?? "").trim() || null,
+    notes: notesCombined,
+  };
+
+  const { error } = await supabase.from("bookings").insert(payload);
+
+  if (error) {
+    return { ok: false, message: error.message };
+  }
+
+  revalidatePath("/admin/bookings");
+  return { ok: true };
+}
+
 async function requireOwner() {
   const { profile } = await getOwnerSession();
   if (!profile) redirect("/login?error=forbidden");

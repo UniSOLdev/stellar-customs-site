@@ -14,103 +14,115 @@ function resolveSiteCanonical(): string {
 
 export const SITE_CANONICAL = resolveSiteCanonical();
 
+export const BRAND_TAGLINE = "Detail. Restore. Protect. Customize.";
+
 export const SERVICE_CATEGORY_LINE =
-  "Luxury mobile automotive · Custom lighting · Concierge diagnostics";
+  "Palm Beach County automotive detailing, restoration, ceramic protection & custom interiors";
 
-const ADDRESS_LINE = "990 Lovejoy Terrace, Odenville, AL 35120";
-
-/** Primary luxury positioning — dual region without keyword stuffing. */
+/** Primary regional pitch — Palm Beach County first. */
 export const REGIONAL_PITCH =
-  "Mobile luxury automotive services across South Florida and Alabama — from Palm Beach and Miami to Birmingham and Huntsville.";
+  "Premium mobile detailing, vehicle restoration, ceramic protection, and custom interior work throughout Palm Beach County — from Jupiter to Boca Raton.";
 
+export const HERO_SUBLINE =
+  "Premium mobile detailing, vehicle restoration, ceramic protection and custom interior work throughout Palm Beach County.";
+
+/** @deprecated Use lib/business/service-areas for city pages */
 export const SOUTH_FLORIDA_MARKETS = [
-  "Palm Beach",
-  "Boca Raton",
-  "Miami",
-  "Fort Lauderdale",
   "West Palm Beach",
+  "Palm Beach",
+  "Palm Beach Gardens",
+  "Jupiter",
+  "Wellington",
+  "Boca Raton",
 ] as const;
 
+/** Secondary / legacy routes — not primary homepage messaging */
 export const ALABAMA_MARKETS = [
   "Birmingham",
   "Huntsville",
-  "Mobile",
-  "Montgomery",
   "Odenville",
-  "Trussville",
-  "Moody",
-  "Pell City",
 ] as const;
 
 export const SITE = {
-  /** Customer-facing brand (matches Google Business Profile). */
-  name: "Stellar Customs & Mobile Repair",
-  /** Legal entity — used for copyright + schema legalName. */
+  /** Customer-facing brand */
+  name: "Stellar Customs",
   legalName: "Stellar Customs, LLC",
-  /** Compact brand variant for tight UI. */
   shortName: "Stellar Customs",
-  tagline: "Luxury Mobile Automotive — South Florida & Alabama",
-  subline: "Concierge diagnostics, ambient lighting, and on-site installs — with the restraint of a premium shop.",
+  tagline: BRAND_TAGLINE,
+  /** Homepage H1 support line */
+  heroHeadlineSupport: "Palm Beach County Automotive Detailing & Customization",
+  subline: HERO_SUBLINE,
   phone: "(207) 557-4193",
   phoneDigits: "2075574193",
   email: "stellarcustoms205@gmail.com",
-  /** Address parts (also used in JSON-LD PostalAddress). */
-  street: "990 Lovejoy Terrace",
-  city: "Odenville",
-  region: "AL",
-  postalCode: "35120",
+  /**
+   * Primary market address for schema — update when Palm Beach studio lease is finalized.
+   * Until then, use service-area business model (no public shop address).
+   */
+  street: "",
+  city: "Palm Beach County",
+  region: "FL",
+  postalCode: "",
   country: "US",
-  /** Single-line postal address for copy + embeds. */
-  addressLine: ADDRESS_LINE,
-  /** Short human location label. */
-  location: "Odenville, Alabama",
-  /** Legacy combined list — prefer SOUTH_FLORIDA_MARKETS + ALABAMA_MARKETS in UI. */
+  addressLine: "Palm Beach County, Florida — mobile & by appointment",
+  location: "Palm Beach County, Florida",
+  /** Legacy Alabama shop — optional secondary; not shown as primary */
+  legacyShop: {
+    street: "990 Lovejoy Terrace",
+    city: "Odenville",
+    region: "AL",
+    postalCode: "35120",
+    addressLine: "990 Lovejoy Terrace, Odenville, AL 35120",
+  },
   serviceAreas: [
-    "Miami",
-    "Fort Lauderdale",
     "West Palm Beach",
-    "Birmingham",
-    "Huntsville",
-    "Odenville",
-    "Trussville",
-    "Moody",
-    "Pell City",
+    "Palm Beach",
+    "Palm Beach Gardens",
+    "North Palm Beach",
+    "Jupiter",
+    "Wellington",
+    "Royal Palm Beach",
+    "Lake Worth Beach",
+    "Boynton Beach",
+    "Delray Beach",
+    "Boca Raton",
   ] as const,
   instagram: "https://www.instagram.com/stellarcustomsllc",
   facebook: "https://www.facebook.com/61580189581701",
   facebookReviews: "https://www.facebook.com/61580189581701/reviews",
-  /** Google rating shown in trust UI (kept in sync with GBP). */
+  /** Only set true when verified — controls trust badge visibility */
+  licensedAndInsured: false,
   googleRating: 5.0,
   googleRatingLabel: "5.0",
   googleReviewLabel: "Google Reviews",
-  /** Facebook social proof. */
   recommendPercent: "100%",
   reviewCount: 34,
   followerCountLabel: "3.5K+",
 } as const;
 
+/** Non-fabricated operational highlights for homepage (no unverified year/vehicle counts). */
+export const SITE_HIGHLIGHTS = {
+  primaryCounty: "Palm Beach County",
+  mobileAndStudio: "Mobile + studio capability",
+  responseNote: "Typical quote response within 1–2 business days",
+} as const;
+
 /** Plausible static social proof for homepage metrics (count-up section). */
 export const SITE_STATS = {
-  vehiclesCustomized: 780,
   fiveStarReviews: SITE.reviewCount,
-  yearsExperience: 8,
-  /** Shown after count-up as suffix, e.g. "2" + " hrs avg" */
   responseHours: 2,
 } as const;
 
-/** `tel:` link — digits only per click-to-call spec. */
 export function siteTelHref() {
   return `tel:${SITE.phoneDigits}`;
 }
 
-/** SMS deep link (US). */
 export function siteSmsHref(body?: string) {
   const base = `sms:+1${SITE.phoneDigits}`;
   if (!body?.trim()) return base;
   return `${base}?body=${encodeURIComponent(body)}`;
 }
 
-/** E.164 for structured data */
 export function sitePhoneE164() {
   return `+1${SITE.phoneDigits}`;
 }
@@ -121,40 +133,24 @@ export function absoluteUrl(path: string) {
   return `${base}${p}`;
 }
 
-const ADDRESS_QUERY = encodeURIComponent(ADDRESS_LINE);
+const LEGACY_ADDRESS_QUERY = encodeURIComponent(SITE.legacyShop.addressLine);
 
-/** Public Google Maps deep link to the shop. */
-export const SITE_GOOGLE_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${ADDRESS_QUERY}`;
+export const SITE_GOOGLE_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${LEGACY_ADDRESS_QUERY}`;
 
-/**
- * Lazy-loadable Maps embed URL — no API key required for the basic search variant.
- * Pair with `<iframe loading="lazy" />` for responsive embeds.
- */
-export const SITE_GOOGLE_MAPS_EMBED_URL = `https://maps.google.com/maps?q=${ADDRESS_QUERY}&z=14&output=embed`;
+export const SITE_GOOGLE_MAPS_EMBED_URL = `https://maps.google.com/maps?q=${LEGACY_ADDRESS_QUERY}&z=14&output=embed`;
 
-/**
- * Official Google review CTA URL.
- *
- * TODO (Eli): paste your real Google Business Profile review link here.
- *   1. Open your GBP dashboard → "Ask for reviews" → "Copy link".
- *   2. The link looks like `https://g.page/r/XXXXXXXXXXXXXXX/review`.
- *
- * Until then we fall back to the Maps listing so the CTA still opens your profile.
- */
 export const SITE_GOOGLE_REVIEW_URL = SITE_GOOGLE_MAPS_URL;
 
-/** Placeholder until hours are finalized */
 export const BUSINESS_HOURS_PLACEHOLDER =
-  "Hours vary by appointment — message or call for same-week availability.";
+  "By appointment — mobile routes across Palm Beach County. Studio hours posted when location opens.";
 
-/** Structured weekly hours used in the footer + LocalBusiness schema. */
 export type BusinessDay = {
   label: string;
   hours: string;
 };
 
 export const BUSINESS_HOURS: BusinessDay[] = [
-  { label: "Mon – Fri", hours: "By appointment · same-week" },
+  { label: "Mon – Fri", hours: "By appointment · mobile & studio" },
   { label: "Saturday", hours: "By appointment" },
   { label: "Sunday", hours: "Closed" },
 ];

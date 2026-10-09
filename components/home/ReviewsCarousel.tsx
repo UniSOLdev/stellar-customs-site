@@ -73,7 +73,7 @@ export function ReviewsCarousel({ reviews }: Props) {
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Clients</p>
           <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">What people say</h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-400">
-            Verified voices from South Florida and Alabama — pulled from your database when live reviews are available.
+            Real reviews from Palm Beach County clients — synced from your database when live reviews are available.
           </p>
         </SectionReveal>
 

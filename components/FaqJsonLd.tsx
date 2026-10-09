@@ -1,29 +1,29 @@
-import { SITE, SITE_CANONICAL, REGIONAL_PITCH } from "@/lib/site";
+import { SITE, SITE_CANONICAL } from "@/lib/site";
 
 const faqs = [
   {
-    q: `Does ${SITE.shortName} offer luxury mobile automotive service in South Florida?`,
-    a: "Yes. We provide concierge-level on-site diagnostics, lighting installs, and repair visits across Palm Beach, Broward, and Miami-Dade when routes are open — with the same disciplined process we use in Alabama.",
+    q: `Does ${SITE.shortName} offer mobile auto detailing in Palm Beach County?`,
+    a: "Yes. We provide premium mobile detailing across Palm Beach County — from Jupiter and Wellington to West Palm Beach, Delray, and Boca Raton. We come to homes, offices, and gated communities.",
   },
   {
-    q: `Can ${SITE.shortName} install a starlight headliner or ambient lighting in Alabama?`,
-    a: "We specialize in premium cabin lighting — starlight headliners, ambient layers, and accent programs — routed cleanly with factory-adjacent finishes and transparent timelines.",
+    q: "Do you only work on exotic cars?",
+    a: "No. We work on luxury vehicles and high-value daily drivers — Tahoe, F-150, Honda, Toyota, and everything in between. Condition-based quoting, not exclusionary branding.",
   },
   {
-    q: "Do you serve Birmingham, Huntsville, or Montgomery with mobile installs?",
-    a: `${SITE.shortName} routes mobile luxury automotive work across Alabama, including Birmingham, Huntsville, Montgomery, and the greater Odenville area. Message your address for same-week availability when capacity allows.`,
+    q: "What is the difference between detailing and restoration?",
+    a: "Detailing resets cleanliness and appearance. Restoration repairs or replaces components like headliners, upholstery, faded trim, and oxidized headlights. Many customers start with a detail and move into restoration once issues are identified.",
   },
   {
-    q: "How does pricing work for mobile luxury automotive visits?",
-    a: "We scope before we wrench: clear findings, a written plan, and agreed pricing before parts and labor move forward — no surprise invoices.",
+    q: "Do you install starlight headliners in West Palm Beach?",
+    a: "Yes — starlight and custom headliner work is a core specialty, typically completed in-studio with a mobile consult. Request a quote with interior photos for an accurate scope.",
   },
   {
-    q: "What areas do you serve between Florida and Alabama?",
-    a: REGIONAL_PITCH,
+    q: "How does ceramic coating help in Florida?",
+    a: "When paint is properly prepped, professional ceramic adds a sacrificial layer that can make maintenance easier and improve resistance to UV, chemicals, and contaminants common in South Florida. Results depend on prep, product, and how the vehicle is maintained.",
   },
   {
-    q: "Can you diagnose complex electrical or drivability issues on-site?",
-    a: "Yes. We combine scan data, road testing when appropriate, and methodical tracing so components are replaced because they failed — not because they were guessed.",
+    q: "How do I get a quote?",
+    a: "Use our quote form with your city, vehicle details, desired services, and photos. We respond with scope and pricing based on size, condition, and labor — not flat car-wash menus.",
   },
 ];
 
@@ -35,14 +35,9 @@ export function FaqJsonLd() {
     mainEntity: faqs.map((item) => ({
       "@type": "Question",
       name: item.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.a,
-      },
+      acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
 
-  return (
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-  );
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }

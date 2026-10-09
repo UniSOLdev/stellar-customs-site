@@ -4,19 +4,17 @@ import { GalleryClient } from "@/components/GalleryClient";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Gallery | Luxury Lighting & Mobile Installs",
+  title: "Gallery | Before & After — Palm Beach County",
   description:
-    "Categorized portfolio of starlight headliners, ambient lighting, luxury upgrades, and mobile concierge work from Stellar Customs — South Florida to Alabama.",
+    "Portfolio of detailing, restoration, ceramic protection, starlight headliners, and custom interior work from Stellar Customs — Palm Beach County.",
   keywords: [
-    "starlight headliner gallery",
-    "luxury automotive lighting Miami",
-    "ambient lighting install Fort Lauderdale",
-    "mobile automotive gallery Alabama",
+    "starlight headliner gallery West Palm Beach",
+    "auto detailing before after Palm Beach",
+    "custom car interior gallery",
   ],
   openGraph: {
     title: `Gallery | ${SITE.shortName}`,
-    description:
-      "Premium installs and mobile transformations — starlight, ambient lighting, audio, and performance detailing.",
+    description: "Before/after automotive work — detailing, restoration, and customization.",
   },
 };
 

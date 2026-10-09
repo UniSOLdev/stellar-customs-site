@@ -1,46 +1,37 @@
-import {
-  SITE,
-  SITE_CANONICAL,
-  SERVICE_CATEGORY_LINE,
-  absoluteUrl,
-  sitePhoneE164,
-  SOUTH_FLORIDA_MARKETS,
-  ALABAMA_MARKETS,
-} from "@/lib/site";
-
-function citySchema(name: string, state: string) {
-  return {
-    "@type": "City" as const,
-    name,
-    containedInPlace: { "@type": "State" as const, name: state },
-  };
-}
+import { SITE, SITE_CANONICAL, SERVICE_CATEGORY_LINE, absoluteUrl, sitePhoneE164 } from "@/lib/site";
+import { CITY_PAGES } from "@/lib/business/service-areas";
+import { STELLAR_STUDIO } from "@/lib/business/studio";
 
 export function OrganizationJsonLd() {
   const areaServed = [
-    ...SOUTH_FLORIDA_MARKETS.map((c) => citySchema(c, "Florida")),
-    ...ALABAMA_MARKETS.map((c) => citySchema(c, "Alabama")),
     {
       "@type": "AdministrativeArea" as const,
       name: "Palm Beach County",
       containedInPlace: { "@type": "State" as const, name: "Florida" },
     },
-    {
-      "@type": "AdministrativeArea" as const,
-      name: "Broward County",
+    ...CITY_PAGES.map((c) => ({
+      "@type": "City" as const,
+      name: c.name,
       containedInPlace: { "@type": "State" as const, name: "Florida" },
-    },
-    {
-      "@type": "AdministrativeArea" as const,
-      name: "Miami-Dade County",
-      containedInPlace: { "@type": "State" as const, name: "Florida" },
-    },
-    {
-      "@type": "AdministrativeArea" as const,
-      name: "St. Clair County",
-      containedInPlace: { "@type": "State" as const, name: "Alabama" },
-    },
+    })),
   ];
+
+  const address =
+    SITE.street && SITE.postalCode
+      ? {
+          "@type": "PostalAddress" as const,
+          streetAddress: SITE.street,
+          addressLocality: SITE.city,
+          addressRegion: SITE.region,
+          postalCode: SITE.postalCode,
+          addressCountry: SITE.country,
+        }
+      : {
+          "@type": "PostalAddress" as const,
+          addressLocality: "Palm Beach County",
+          addressRegion: "FL",
+          addressCountry: "US",
+        };
 
   const schema = {
     "@context": "https://schema.org",
@@ -49,25 +40,29 @@ export function OrganizationJsonLd() {
     name: SITE.name,
     url: SITE_CANONICAL,
     image: absoluteUrl("/stellar-logo.png"),
-    description: `${SITE.tagline} ${SITE.subline} ${SERVICE_CATEGORY_LINE}`,
+    description: `${SERVICE_CATEGORY_LINE}. ${SITE.subline}`,
     telephone: sitePhoneE164(),
     email: SITE.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: SITE.street,
-      addressLocality: SITE.city,
-      addressRegion: SITE.region,
-      postalCode: SITE.postalCode,
-      addressCountry: SITE.country,
-    },
+    address,
     areaServed,
+    ...(STELLAR_STUDIO.published && STELLAR_STUDIO.streetAddress
+      ? {
+          department: {
+            "@type": "AutomotiveBusiness",
+            name: STELLAR_STUDIO.name,
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: STELLAR_STUDIO.streetAddress,
+              addressLocality: STELLAR_STUDIO.city,
+              addressRegion: STELLAR_STUDIO.region,
+              postalCode: STELLAR_STUDIO.postalCode,
+              addressCountry: "US",
+            },
+          },
+        }
+      : {}),
     sameAs: [SITE.facebook, SITE.instagram],
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }

@@ -15,7 +15,7 @@ export function ReviewsTrustIntro() {
     >
       <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-stellar-blue/10 blur-3xl" aria-hidden />
       <h2 className="font-display text-center text-2xl font-bold text-white sm:text-left sm:text-3xl">
-        Trusted by Alabama Drivers
+        Trusted in Palm Beach County
       </h2>
 
       <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">

@@ -1,21 +1,15 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
+import { GlowButton } from "@/components/GlowButton";
 import { FollowUsLinks } from "@/components/FollowUsLinks";
-import { BUSINESS_HOURS_PLACEHOLDER, HERO_LOGO_PATH, LOGO_ASPECT_HEIGHT, LOGO_ASPECT_WIDTH, SITE, siteTelHref } from "@/lib/site";
+import { BUSINESS_HOURS, SITE, siteSmsHref, siteTelHref, absoluteUrl } from "@/lib/site";
+import { STELLAR_STUDIO } from "@/lib/business/studio";
 
 export const metadata: Metadata = {
-  title: "Contact | Luxury Mobile Automotive — Florida & Alabama",
-  description: `Contact ${SITE.name} — concierge mobile service across South Florida and Alabama. Request a quote, schedule an install, or reach the team for emergency routing.`,
-  keywords: [
-    "contact Stellar Customs",
-    "luxury mobile automotive Miami",
-    "mobile mechanic Birmingham",
-    "ambient lighting quote Palm Beach",
-  ],
-  openGraph: {
-    title: `Contact | ${SITE.shortName}`,
-    description: `Reach ${SITE.shortName} for luxury mobile installs and repair across Florida and Alabama.`,
-  },
+  title: "Contact | Palm Beach County Mobile Detailing",
+  description: `Contact ${SITE.shortName} — mobile detailing, restoration, and customization across Palm Beach County. Call, text, or request a quote.`,
+  alternates: { canonical: "/contact" },
+  openGraph: { title: `Contact | ${SITE.shortName}`, url: absoluteUrl("/contact") },
 };
 
 export default function ContactPage() {
@@ -25,75 +19,71 @@ export default function ContactPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Get in touch</p>
         <h1 className="font-display mt-2 text-4xl font-bold text-white sm:text-5xl">Contact</h1>
         <p className="mt-4 max-w-2xl text-zinc-400">
-          Call, email, or message — we serve Odenville and surrounding Alabama with on-site automotive repair and
-          custom lighting.
+          Palm Beach County mobile routes — quote-first for restoration, ceramic, and custom interior work.
         </p>
 
+        <div className="mt-10 flex flex-wrap gap-4">
+          <GlowButton href="/quote">Get My Quote</GlowButton>
+          <a
+            href={siteTelHref()}
+            className="inline-flex min-h-[48px] items-center rounded-full border border-white/15 px-6 text-sm font-bold uppercase tracking-wider text-white"
+          >
+            Call {SITE.phone}
+          </a>
+          <a
+            href={siteSmsHref()}
+            className="inline-flex min-h-[48px] items-center rounded-full border border-white/15 px-6 text-sm font-bold uppercase tracking-wider text-white"
+          >
+            Text us
+          </a>
+        </div>
+
         <div className="mt-12 grid gap-10 lg:grid-cols-2">
-          <div className="space-y-8 rounded-3xl border border-stellar-blue/15 bg-stellar-surface/40 p-8 shadow-lg shadow-black/30 backdrop-blur-sm">
-            <div className="flex items-center gap-4">
-              <span
-                className="relative h-16 w-auto shrink-0 rounded-xl bg-transparent ring-1 ring-stellar-blue/30"
-                style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
-              >
-                <Image
-                  src={HERO_LOGO_PATH}
-                  alt={`${SITE.name} logo`}
-                  fill
-                  className="object-contain p-1 [image-rendering:-webkit-optimize-contrast] bg-transparent drop-shadow-[0_0_1px_rgba(255,255,255,0.07)]"
-                  sizes="(max-width: 768px) 192px, 128px"
-                  quality={96}
-                />
-              </span>
-              <div>
-                <p className="font-display text-lg font-bold text-white">{SITE.name}</p>
-                <p className="text-xs uppercase tracking-widest text-zinc-500">Automotive Repair Shop</p>
-              </div>
+          <div className="space-y-8 rounded-3xl border border-stellar-blue/15 bg-stellar-surface/40 p-8">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Email</p>
+              <a href={`mailto:${SITE.email}`} className="mt-2 block text-zinc-300 hover:text-stellar-blue">
+                {SITE.email}
+              </a>
             </div>
-
-            <div className="space-y-4 text-sm">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Phone</p>
-                <a
-                  href={siteTelHref()}
-                  className="mt-1 inline-block min-h-[44px] text-lg font-semibold text-white underline-offset-4 hover:text-stellar-blue hover:underline"
-                >
-                  {SITE.phone}
-                </a>
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Email</p>
-                <a
-                  href={`mailto:${SITE.email}`}
-                  className="mt-1 inline-block min-h-[44px] break-all text-zinc-300 underline-offset-4 hover:text-stellar-blue hover:underline"
-                >
-                  {SITE.email}
-                </a>
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Location</p>
-                <p className="mt-1 text-zinc-300">{SITE.location}</p>
-              </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Service area</p>
+              <p className="mt-2 text-zinc-300">{SITE.location}</p>
             </div>
-
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Studio</p>
+              <p className="mt-2 text-sm text-zinc-400">
+                {STELLAR_STUDIO.published
+                  ? `${STELLAR_STUDIO.name} — ${STELLAR_STUDIO.streetAddress}, ${STELLAR_STUDIO.city}`
+                  : `${STELLAR_STUDIO.name} (${STELLAR_STUDIO.areaLabel}) — address and map publish when lease is finalized.`}
+              </p>
+            </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Hours</p>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{BUSINESS_HOURS_PLACEHOLDER}</p>
+              <ul className="mt-2 space-y-1 text-sm text-zinc-400">
+                {BUSINESS_HOURS.map((h) => (
+                  <li key={h.label}>
+                    {h.label}: {h.hours}
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <div className="mt-6 border-t border-white/5 pt-6">
-              <FollowUsLinks />
-            </div>
+            <FollowUsLinks />
           </div>
 
-          <div className="flex flex-col gap-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Map</p>
-            <div className="flex min-h-[280px] flex-1 flex-col items-center justify-center rounded-3xl border border-dashed border-white/15 bg-stellar-void/80 p-8 text-center text-sm text-zinc-500">
-              <p className="max-w-xs">
-                Google Maps embed placeholder — open Google Maps, search your business, use <strong>Share → Embed a map</strong>, and paste the iframe code here.
-              </p>
-              <p className="mt-4 text-xs text-zinc-600">Odenville, AL</p>
-            </div>
+          <div className="rounded-3xl border border-dashed border-white/15 bg-stellar-void/80 p-8 text-sm text-zinc-500">
+            <p className="font-semibold text-zinc-400">Map</p>
+            <p className="mt-4">
+              When the West Palm / Riviera studio opens, embed Google Maps here via{" "}
+              <code className="text-zinc-400">lib/business/studio.ts</code> — set{" "}
+              <code className="text-zinc-400">published: true</code> and map URLs.
+            </p>
+            <p className="mt-6">
+              Prefer a quote with photos?{" "}
+              <Link href="/quote" className="text-stellar-blue hover:underline">
+                Get My Quote
+              </Link>
+            </p>
           </div>
         </div>
       </div>

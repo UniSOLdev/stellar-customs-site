@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Orbitron } from "next/font/google";
 import "./globals.css";
 import { SiteChrome } from "@/components/SiteChrome";
-import { SITE, SITE_CANONICAL } from "@/lib/site";
+import { SITE, SITE_CANONICAL, BRAND_TAGLINE, SERVICE_CATEGORY_LINE } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,38 +20,39 @@ const orbitron = Orbitron({
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
+const defaultDescription = `${SITE.heroHeadlineSupport}. ${SITE.subline} ${SERVICE_CATEGORY_LINE}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CANONICAL),
   title: {
-    default: `${SITE.shortName} | Luxury Mobile Automotive — South Florida & Alabama`,
+    default: `${SITE.shortName} | ${BRAND_TAGLINE} — Palm Beach County`,
     template: `%s | ${SITE.shortName}`,
   },
-  description: `${SITE.tagline} ${SITE.subline} Premium starlight headliner installs, ambient lighting, and concierge mobile repair across Palm Beach, Miami, Fort Lauderdale, Birmingham, Huntsville, and Alabama.`,
+  description: defaultDescription,
   keywords: [
-    "luxury mobile automotive South Florida",
-    "starlight headliner install Alabama",
-    "ambient lighting installation Miami",
-    "custom Escalade lighting",
-    "mobile automotive lighting Fort Lauderdale",
-    "luxury vehicle customization Palm Beach",
-    "mobile mechanic Birmingham",
+    "auto detailing West Palm Beach",
+    "mobile detailing West Palm Beach",
+    "car detailing Palm Beach County",
+    "ceramic coating West Palm Beach",
+    "paint correction West Palm Beach",
+    "headliner repair West Palm Beach",
+    "starlight headliner West Palm Beach",
+    "custom car interior West Palm Beach",
+    "auto interior restoration Palm Beach County",
+    "mobile car detailing Palm Beach Gardens",
+    "mobile detailing Jupiter",
+    "car detailing Wellington",
+    "car detailing Palm Beach",
     "Stellar Customs",
   ],
   openGraph: {
-    title: `${SITE.shortName} | Luxury Mobile Automotive`,
-    description: SITE.tagline,
+    title: `${SITE.shortName} | Palm Beach County Automotive Detailing`,
+    description: defaultDescription,
     url: SITE_CANONICAL,
     siteName: SITE.name,
     type: "website",
     locale: "en_US",
-    images: [
-      {
-        url: "/stellar-logo.png",
-        width: 1200,
-        height: 630,
-        alt: SITE.name,
-      },
-    ],
+    images: [{ url: "/stellar-logo.png", width: 1200, height: 630, alt: SITE.name }],
   },
   robots: { index: true, follow: true },
 };

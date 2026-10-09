@@ -29,7 +29,8 @@ export function TransformationShowcase() {
             Before / after discipline
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400 sm:text-base">
-            Restrained reveals — the kind of upgrade that reads expensive in person, not loud on a screen.
+            Headliners, cabins, and paint — real before/after photos from your gallery replace these placeholders. Each
+            project can become local content (make + service + city) when you publish it.
           </p>
         </SectionReveal>
 
