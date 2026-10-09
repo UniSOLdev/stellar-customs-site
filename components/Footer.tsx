@@ -1,53 +1,78 @@
 import Image from "next/image";
-import { HERO_LOGO_PATH, LOGO_ASPECT_HEIGHT, LOGO_ASPECT_WIDTH, SITE, siteTelHref } from "@/lib/site";
-import { FollowUsLinks } from "@/components/FollowUsLinks";
+import Link from "next/link";
+import {
+  BRAND_TAGLINE,
+  BUSINESS_HOURS,
+  HERO_LOGO_PATH,
+  LOGO_ASPECT_HEIGHT,
+  LOGO_ASPECT_WIDTH,
+  SITE,
+  siteTelHref,
+  siteSmsHref,
+} from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer id="contact" className="border-t border-stellar-blue/10 bg-stellar-void">
+    <footer id="contact" className="border-t border-white/[0.06] bg-[#050506]">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="flex items-center gap-4">
             <span
-              className="relative h-14 w-auto shrink-0 rounded-lg bg-transparent ring-1 ring-stellar-blue/30"
+              className="relative h-12 w-auto shrink-0 opacity-90"
               style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
             >
-              <Image
-                src={HERO_LOGO_PATH}
-                alt={`${SITE.name} logo`}
-                fill
-                className="object-contain p-1 [image-rendering:-webkit-optimize-contrast] bg-transparent drop-shadow-[0_0_1px_rgba(255,255,255,0.06)]"
-                sizes="(max-width: 768px) 168px, 112px"
-                quality={96}
-              />
+              <Image src={HERO_LOGO_PATH} alt={`${SITE.shortName} logo`} fill className="object-contain" sizes="96px" />
             </span>
             <div>
-              <p className="font-display text-lg font-bold tracking-wide text-white">
-                STELLAR<span className="text-stellar-blue">CUSTOMS</span>
-              </p>
-              <p className="text-xs uppercase tracking-widest text-zinc-500">
-                Automotive Repair Shop · Mobile Mechanic
-              </p>
+              <p className="text-sm font-semibold text-white">Stellar Customs</p>
+              <p className="mt-1 text-xs text-zinc-600">{BRAND_TAGLINE}</p>
             </div>
           </div>
 
-          <div className="grid gap-10 text-sm text-zinc-400 sm:grid-cols-2 md:max-w-lg md:gap-12">
-            <div className="space-y-2 md:text-right">
-              <p className="text-xs font-semibold uppercase tracking-wider text-stellar-blue">Contact</p>
-              <a href={siteTelHref()} className="block min-h-[44px] py-1 hover:text-white md:min-h-0">
+          <div className="grid gap-10 text-sm sm:grid-cols-3 md:max-w-2xl">
+            <div className="space-y-2 text-zinc-500">
+              <p className="text-xs font-medium text-zinc-400">Contact</p>
+              <a href={siteTelHref()} className="block hover:text-white">
                 {SITE.phone}
               </a>
-              <a href={`mailto:${SITE.email}`} className="block min-h-[44px] py-1 break-all hover:text-white md:min-h-0">
+              <a href={siteSmsHref()} className="block hover:text-white">
+                Text
+              </a>
+              <a href={`mailto:${SITE.email}`} className="block break-all hover:text-white">
                 {SITE.email}
               </a>
-              <p>{SITE.location}</p>
+              <Link href="/quote" className="block text-white hover:text-zinc-300">
+                Get a quote
+              </Link>
             </div>
-            <FollowUsLinks />
+            <div className="space-y-2 text-zinc-500">
+              <p className="text-xs font-medium text-zinc-400">Services</p>
+              <Link href="/services" className="block hover:text-white">
+                All services
+              </Link>
+              <Link href="/mobile-detailing" className="block hover:text-white">
+                Mobile detailing
+              </Link>
+              <Link href="/ceramic-coating" className="block hover:text-white">
+                Ceramic coating
+              </Link>
+              <Link href="/starlight-headliner" className="block hover:text-white">
+                Starlight headliner
+              </Link>
+            </div>
+            <div className="space-y-1 text-zinc-500">
+              <p className="text-xs font-medium text-zinc-400">Hours</p>
+              {BUSINESS_HOURS.map((row) => (
+                <p key={row.label}>
+                  {row.label} · {row.hours}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/5 pt-8 text-center text-xs text-zinc-600">
-          © {new Date().getFullYear()} Stellar Customs LLC. All rights reserved.
+        <div className="mt-12 border-t border-white/[0.06] pt-8 text-center text-xs text-zinc-700">
+          © {new Date().getFullYear()} {SITE.legalName}
         </div>
       </div>
     </footer>

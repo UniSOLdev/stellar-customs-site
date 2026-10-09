@@ -6,293 +6,87 @@ import { GlowButton } from "@/components/GlowButton";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { GALLERY_ITEMS } from "@/lib/gallery-data";
 import { HomeTrustSection } from "@/components/HomeTrustSection";
-import { TransformationShowcase } from "@/components/home/TransformationShowcase";
 import { ServiceAreasSection } from "@/components/home/ServiceAreasSection";
 import { WhyChooseSection } from "@/components/home/WhyChooseSection";
-import { StatsBarSection } from "@/components/home/StatsBarSection";
 import { ReviewsCarousel } from "@/components/home/ReviewsCarousel";
-import { CinematicIntro } from "@/components/cinematic-intro/CinematicIntro";
-import type { GalleryImageRow, ServiceRow } from "@/lib/db/types";
+import { PillarsSection } from "@/components/home/PillarsSection";
+import { FloridaConditionsSection } from "@/components/home/FloridaConditionsSection";
+import { SignatureOffersSection } from "@/components/home/SignatureOffersSection";
+import { CustomerJourneySection } from "@/components/home/CustomerJourneySection";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import type { GalleryImageRow } from "@/lib/db/types";
 import type { HomeReviewSlide } from "@/lib/reviews-carousel-data";
 
-const productCategories = [
-  { title: "Merch", blurb: "Print-on-demand hoodies, tees, and hats." },
-  { title: "Starlight Headliner Kits", blurb: "Fiber optics that turn your roof into a night sky." },
-  { title: "LED Interior Kits", blurb: "App-controlled ambient cabin lighting." },
-  { title: "Underglow Kits", blurb: "Street-legal RGB underbody accents." },
-  { title: "Gift Cards", blurb: "The perfect gift for any build." },
-];
-
 type Props = {
-  services: ServiceRow[];
   galleryPreview: GalleryImageRow[];
-  /** Set when Supabase gallery query failed (layout unchanged; shows subtle notice). */
-  galleryLoadError?: string | null;
   initialReviews: HomeReviewSlide[];
 };
 
-export function HomePageClient({ services, galleryPreview, galleryLoadError, initialReviews }: Props) {
+export function HomePageClient({ galleryPreview, initialReviews }: Props) {
   const useDbGallery = galleryPreview.length > 0;
+
   return (
     <>
-      <CinematicIntro />
       <HeroSection />
-
       <HomeTrustSection />
-
-      <TransformationShowcase />
-
+      <PillarsSection />
+      <SignatureOffersSection />
       <WhyChooseSection />
+      <CustomerJourneySection />
+      <FloridaConditionsSection />
 
-      <StatsBarSection />
+      {useDbGallery ? (
+        <section className="border-t border-white/[0.06] py-16 sm:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionReveal>
+              <div className="flex w-full flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                <SectionHeader
+                  eyebrow="Work"
+                  title="Recent projects"
+                  description="Completed work from the live Stellar Customs gallery."
+                />
+                <GlowButton href="/gallery" variant="outline" fullWidthMobile>
+                  View gallery
+                </GlowButton>
+              </div>
+            </SectionReveal>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {galleryPreview.slice(0, 4).map((g, i) => (
+                <SectionReveal key={g.id} delay={i * 0.05}>
+                  <Link href="/gallery" className="group block">
+                    <motion.div
+                      whileHover={{ y: -3 }}
+                      className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02]"
+                    >
+                      <Image src={g.image_url} alt={g.caption || "Stellar Customs project"} fill className="object-cover transition duration-500 group-hover:scale-[1.02]" sizes="(max-width: 768px) 100vw, 25vw" />
+                      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-transparent to-transparent p-4">
+                        <span className="text-sm text-white">{g.caption || "Completed project"}</span>
+                      </div>
+                    </motion.div>
+                  </Link>
+                </SectionReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <ReviewsCarousel reviews={initialReviews} />
-
-      {/* Services from Supabase */}
-      <section className="relative border-t border-stellar-blue/10 bg-stellar-void py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="flex w-full flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Services</p>
-                <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">What we offer</h2>
-                <p className="mt-3 max-w-xl text-zinc-400">
-                  {services.length > 0
-                    ? "Live from your admin dashboard — update anytime."
-                    : "Add services in Admin to show your menu here. Until then, book a call and we’ll tailor the job to your vehicle."}
-                </p>
-              </div>
-              <div className="w-full shrink-0 md:w-auto">
-                <GlowButton href="/booking" variant="outline" fullWidthMobile>
-                  Book now
-                </GlowButton>
-              </div>
-            </div>
-          </SectionReveal>
-
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {(services.length > 0 ? services.slice(0, 6) : []).map((s, i) => (
-              <SectionReveal key={s.id} delay={i * 0.06}>
-                <motion.div
-                  whileHover={{ y: -5 }}
-                  className="h-full rounded-2xl border border-white/5 bg-stellar-surface/80 p-6 shadow-lg shadow-black/40 backdrop-blur-sm"
-                >
-                  <div className="h-1 w-10 rounded-full bg-gradient-to-r from-stellar-blue to-stellar-orange" />
-                  <h3 className="mt-5 font-display text-lg font-semibold text-white">{s.title}</h3>
-                  {s.price ? (
-                    <p className="mt-2 text-sm font-bold uppercase tracking-wider text-stellar-blue">{s.price}</p>
-                  ) : null}
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-400">{s.description ?? ""}</p>
-                </motion.div>
-              </SectionReveal>
-            ))}
-            {services.length === 0 ? (
-              <SectionReveal className="sm:col-span-2 lg:col-span-3">
-                <div className="rounded-2xl border border-dashed border-stellar-blue/25 bg-stellar-blue/5 p-8 text-center text-sm text-zinc-400">
-                  Service list coming soon — owner can add entries in{" "}
-                  <Link href="/admin/services" className="text-stellar-blue underline">
-                    Admin → Services
-                  </Link>
-                  .
-                </div>
-              </SectionReveal>
-            ) : null}
-          </div>
-        </div>
-      </section>
-
-      {/* Recent Work */}
-      <section className="relative border-t border-stellar-blue/10 bg-stellar-void py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="flex w-full flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Portfolio</p>
-                <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">Recent Work</h2>
-                <p className="mt-3 max-w-xl text-zinc-400">
-                  {galleryLoadError
-                    ? "We couldn’t reach the live gallery right now — showing placeholders until the connection is back."
-                    : useDbGallery
-                      ? "Photos from your live gallery — tap through to see the full wall."
-                      : "Precision installs and honest workmanship — upload your project shots to replace these placeholders."}
-                </p>
-              </div>
-              <div className="w-full shrink-0 md:w-auto">
-                <GlowButton href="/gallery" variant="outline" fullWidthMobile>
-                  View Full Gallery
-                </GlowButton>
-              </div>
-            </div>
-          </SectionReveal>
-
-          {galleryLoadError && !useDbGallery ? (
-            <div className="mt-8 rounded-xl border border-stellar-orange/35 bg-stellar-orange/10 px-4 py-3 text-sm text-stellar-orange-soft">
-              Gallery couldn’t load: {galleryLoadError}
-            </div>
-          ) : null}
-
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {useDbGallery
-              ? galleryPreview.slice(0, 4).map((g, i) => (
-                  <SectionReveal key={g.id} delay={i * 0.06}>
-                    <Link href="/gallery" className="group block">
-                      <motion.div
-                        whileHover={{ y: -4, scale: 1.01 }}
-                        transition={{ type: "spring", stiffness: 380, damping: 28 }}
-                        className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/5 bg-stellar-surface ring-1 ring-stellar-blue/10"
-                      >
-                        <motion.div
-                          initial={{ opacity: 0.92 }}
-                          whileInView={{ opacity: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.55 }}
-                          className="absolute inset-0"
-                        >
-                          <Image
-                            src={g.image_url}
-                            alt={g.caption || "Gallery"}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 25vw"
-                          />
-                        </motion.div>
-                        <div className="absolute inset-0 bg-black/45 transition duration-300 group-hover:bg-black/55" />
-                        <div className="absolute inset-0 flex flex-col justify-end p-4">
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-stellar-orange">
-                            Gallery
-                          </span>
-                          <span className="mt-1 font-medium text-white">{g.caption || "Project"}</span>
-                          <p className="mt-2 max-w-[95%] text-xs leading-relaxed text-zinc-200 opacity-0 transition duration-300 group-hover:opacity-100">
-                            View full gallery
-                          </p>
-                        </div>
-                      </motion.div>
-                    </Link>
-                  </SectionReveal>
-                ))
-              : GALLERY_ITEMS.slice(0, 4).map((item, i) => (
-                  <SectionReveal key={item.id} delay={i * 0.06}>
-                    <Link href="/gallery" className="group block">
-                      <motion.div
-                        whileHover={{ y: -4, scale: 1.01 }}
-                        transition={{ type: "spring", stiffness: 380, damping: 28 }}
-                        className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/5 bg-stellar-surface ring-1 ring-stellar-blue/10"
-                      >
-                        <motion.div
-                          initial={{ opacity: 0.88 }}
-                          whileInView={{ opacity: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.6 }}
-                          className={`absolute inset-0 bg-gradient-to-br ${item.placeholderClass}`}
-                        />
-                        <div className="absolute inset-0 bg-black/45 transition duration-300 group-hover:bg-black/55" />
-                        <div className="absolute inset-0 flex flex-col justify-end p-4">
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-stellar-orange">
-                            {item.category}
-                          </span>
-                          <span className="mt-1 font-medium text-white">{item.title}</span>
-                          <p className="mt-2 max-w-[95%] text-xs leading-relaxed text-zinc-200 opacity-0 transition duration-300 group-hover:opacity-100">
-                            {item.caption}
-                          </p>
-                        </div>
-                      </motion.div>
-                    </Link>
-                  </SectionReveal>
-                ))}
-          </div>
-        </div>
-      </section>
-
       <ServiceAreasSection />
 
-      {/* Booking preview */}
-      <section className="relative py-20 sm:py-28">
-        <div className="absolute inset-0 bg-gradient-to-b from-stellar-void via-stellar-black to-stellar-void" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">On your schedule</p>
-            <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">Schedule Service</h2>
-          </SectionReveal>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                title: "On-Site Convenience",
-                body: "We come to you with a fully equipped mobile bay — no waiting rooms.",
-              },
-              {
-                title: "Transparent Pricing",
-                body: "Clear estimates before the wrench turns. No surprise invoices.",
-              },
-              {
-                title: "Fast Response",
-                body: "Same-week routing across South Florida coastal lanes and Alabama metro corridors when capacity allows.",
-              },
-            ].map((card, i) => (
-              <SectionReveal key={card.title} delay={i * 0.08}>
-                <motion.div
-                  whileHover={{ y: -5 }}
-                  className="h-full rounded-2xl border border-stellar-blue/15 bg-stellar-surface/80 p-6 shadow-lg shadow-black/40 backdrop-blur-sm"
-                >
-                  <div className="h-1 w-10 rounded-full bg-gradient-to-r from-stellar-blue to-stellar-orange" />
-                  <h3 className="mt-5 font-display text-lg font-semibold text-white">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-400">{card.body}</p>
-                </motion.div>
-              </SectionReveal>
-            ))}
+      <section className="border-t border-white/[0.06] px-4 py-16 sm:px-6 sm:py-24">
+        <SectionReveal className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white/[0.09] bg-white/[0.035] p-7 backdrop-blur-xl sm:p-12">
+          <div className="grid items-end gap-8 md:grid-cols-[1fr_auto]">
+            <SectionHeader
+              eyebrow="Start here"
+              title="Begin with a quote"
+              description="Share your vehicle details, requested services, and photos. We will confirm scope, timing, and investment before anything is scheduled."
+            />
+            <GlowButton href="/quote">Request a quote</GlowButton>
           </div>
-
-          <SectionReveal className="mt-10 flex w-full justify-center px-0 sm:px-0" delay={0.2}>
-            <div className="w-full max-w-md sm:max-w-none">
-              <GlowButton href="/booking" fullWidthMobile>
-                Book Now
-              </GlowButton>
-            </div>
-          </SectionReveal>
-        </div>
-      </section>
-
-      {/* Products preview */}
-      <section className="border-t border-stellar-blue/10 bg-stellar-void py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Store</p>
-                <h2 className="font-display mt-2 text-3xl font-bold text-white sm:text-4xl">Stellar Customs Products</h2>
-              </div>
-              <div className="w-full shrink-0 sm:w-auto">
-                <GlowButton href="/shop" variant="outline" fullWidthMobile>
-                  Shop All Products
-                </GlowButton>
-              </div>
-            </div>
-          </SectionReveal>
-
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {productCategories.map((cat, i) => (
-              <SectionReveal key={cat.title} delay={i * 0.05}>
-                <Link href="/shop" className="block h-full">
-                  <motion.div
-                    whileHover={{ y: -6 }}
-                    className="group h-full rounded-2xl border border-white/5 bg-gradient-to-br from-stellar-surface to-stellar-black p-6 shadow-inner shadow-stellar-blue/5 ring-1 ring-stellar-blue/10 transition hover:ring-stellar-orange/30"
-                  >
-                    <h3 className="font-display text-lg font-semibold text-white group-hover:text-stellar-blue">
-                      {cat.title}
-                    </h3>
-                    <p className="mt-3 text-sm text-zinc-400">{cat.blurb}</p>
-                    <span className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-stellar-orange">
-                      Explore
-                      <span aria-hidden>→</span>
-                    </span>
-                  </motion.div>
-                </Link>
-              </SectionReveal>
-            ))}
-          </div>
-        </div>
+        </SectionReveal>
       </section>
     </>
   );

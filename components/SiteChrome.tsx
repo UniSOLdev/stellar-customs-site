@@ -7,6 +7,7 @@ import { StickyMobileCall } from "@/components/StickyMobileCall";
 import { CartProvider } from "@/components/CartProvider";
 import { OrganizationJsonLd } from "@/components/OrganizationJsonLd";
 import { FaqJsonLd } from "@/components/FaqJsonLd";
+import { AstraAmbient } from "@/components/AstraAmbient";
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -22,6 +23,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       <OrganizationJsonLd />
       <FaqJsonLd />
       <CartProvider>
+        <AstraAmbient />
         <div className="noise-overlay" aria-hidden />
         <Navbar />
         <main className="relative z-10 flex-1 pb-40 md:pb-0">{children}</main>

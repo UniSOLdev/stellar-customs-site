@@ -1,100 +1,101 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
+import { GlowButton } from "@/components/GlowButton";
 import { FollowUsLinks } from "@/components/FollowUsLinks";
-import { BUSINESS_HOURS_PLACEHOLDER, HERO_LOGO_PATH, LOGO_ASPECT_HEIGHT, LOGO_ASPECT_WIDTH, SITE, siteTelHref } from "@/lib/site";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { CONCIERGE } from "@/lib/concierge-copy";
+import { BUSINESS_HOURS, SITE, siteSmsHref, siteTelHref, absoluteUrl } from "@/lib/site";
+import { STELLAR_STUDIO } from "@/lib/business/studio";
 
 export const metadata: Metadata = {
-  title: "Contact | Luxury Mobile Automotive — Florida & Alabama",
-  description: `Contact ${SITE.name} — concierge mobile service across South Florida and Alabama. Request a quote, schedule an install, or reach the team for emergency routing.`,
-  keywords: [
-    "contact Stellar Customs",
-    "luxury mobile automotive Miami",
-    "mobile mechanic Birmingham",
-    "ambient lighting quote Palm Beach",
-  ],
-  openGraph: {
-    title: `Contact | ${SITE.shortName}`,
-    description: `Reach ${SITE.shortName} for luxury mobile installs and repair across Florida and Alabama.`,
-  },
+  title: "Contact | Palm Beach County Vehicle Care",
+  description: `Contact ${SITE.shortName} for mobile detailing, restoration, and customization across Palm Beach County.`,
+  alternates: { canonical: "/contact" },
+  openGraph: { title: `Contact | ${SITE.shortName}`, url: absoluteUrl("/contact") },
 };
+
+function studioLine(): string {
+  if (STELLAR_STUDIO.published && STELLAR_STUDIO.streetAddress) {
+    return `${STELLAR_STUDIO.name} — ${STELLAR_STUDIO.streetAddress}, ${STELLAR_STUDIO.city}`;
+  }
+  return `${STELLAR_STUDIO.name} (${STELLAR_STUDIO.areaLabel}). Studio address and hours will be published when our lease is finalized. Until then, we schedule mobile visits and intake for in-studio projects by quote.`;
+}
 
 export default function ContactPage() {
   return (
-    <div className="min-h-dvh bg-stellar-black pb-40 pt-28 md:pb-24">
+    <div className="min-h-dvh bg-stellar-black pb-24 pt-28 md:pb-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Get in touch</p>
-        <h1 className="font-display mt-2 text-4xl font-bold text-white sm:text-5xl">Contact</h1>
-        <p className="mt-4 max-w-2xl text-zinc-400">
-          Call, email, or message — we serve Odenville and surrounding Alabama with on-site automotive repair and
-          custom lighting.
-        </p>
+        <SectionHeader eyebrow="Contact" title="Speak with our team" description={CONCIERGE.contactIntro} />
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-2">
-          <div className="space-y-8 rounded-3xl border border-stellar-blue/15 bg-stellar-surface/40 p-8 shadow-lg shadow-black/30 backdrop-blur-sm">
-            <div className="flex items-center gap-4">
-              <span
-                className="relative h-16 w-auto shrink-0 rounded-xl bg-transparent ring-1 ring-stellar-blue/30"
-                style={{ aspectRatio: `${LOGO_ASPECT_WIDTH} / ${LOGO_ASPECT_HEIGHT}` }}
-              >
-                <Image
-                  src={HERO_LOGO_PATH}
-                  alt={`${SITE.name} logo`}
-                  fill
-                  className="object-contain p-1 [image-rendering:-webkit-optimize-contrast] bg-transparent drop-shadow-[0_0_1px_rgba(255,255,255,0.07)]"
-                  sizes="(max-width: 768px) 192px, 128px"
-                  quality={96}
-                />
-              </span>
-              <div>
-                <p className="font-display text-lg font-bold text-white">{SITE.name}</p>
-                <p className="text-xs uppercase tracking-widest text-zinc-500">Automotive Repair Shop</p>
-              </div>
-            </div>
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <GlowButton href="/quote">Request a quote</GlowButton>
+          <p className="text-sm text-zinc-500">
+            Prefer to talk first?{" "}
+            <a href={siteTelHref()} className="text-zinc-300 underline-offset-4 hover:text-white hover:underline">
+              Call {SITE.phone}
+            </a>
+            {" · "}
+            <a href={siteSmsHref()} className="text-zinc-300 underline-offset-4 hover:text-white hover:underline">
+              Send a text
+            </a>
+          </p>
+        </div>
 
-            <div className="space-y-4 text-sm">
+        <div className="mt-14 grid gap-6 lg:grid-cols-2">
+          <GlassCard className="space-y-8 p-8 sm:p-10">
+            <dl className="space-y-7">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Phone</p>
-                <a
-                  href={siteTelHref()}
-                  className="mt-1 inline-block min-h-[44px] text-lg font-semibold text-white underline-offset-4 hover:text-stellar-blue hover:underline"
-                >
-                  {SITE.phone}
-                </a>
+                <dt className="text-sm font-medium text-zinc-500">Email</dt>
+                <dd className="mt-1.5">
+                  <a href={`mailto:${SITE.email}`} className="text-base text-zinc-200 hover:text-white">
+                    {SITE.email}
+                  </a>
+                </dd>
               </div>
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Email</p>
-                <a
-                  href={`mailto:${SITE.email}`}
-                  className="mt-1 inline-block min-h-[44px] break-all text-zinc-300 underline-offset-4 hover:text-stellar-blue hover:underline"
-                >
-                  {SITE.email}
-                </a>
+                <dt className="text-sm font-medium text-zinc-500">Service area</dt>
+                <dd className="mt-1.5 text-base leading-relaxed text-zinc-300">{SITE.location}</dd>
               </div>
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Location</p>
-                <p className="mt-1 text-zinc-300">{SITE.location}</p>
+                <dt className="text-sm font-medium text-zinc-500">Studio</dt>
+                <dd className="mt-1.5 text-sm leading-relaxed text-zinc-400">{studioLine()}</dd>
               </div>
-            </div>
+              <div>
+                <dt className="text-sm font-medium text-zinc-500">Hours</dt>
+                <dd className="mt-1.5">
+                  <ul className="space-y-1 text-sm text-zinc-400">
+                    {BUSINESS_HOURS.map((h) => (
+                      <li key={h.label}>
+                        <span className="text-zinc-500">{h.label}</span>
+                        <span className="mx-2 text-zinc-700" aria-hidden>
+                          ·
+                        </span>
+                        {h.hours}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            </dl>
+            <FollowUsLinks />
+          </GlassCard>
 
+          <GlassCard className="flex flex-col justify-between p-8 sm:p-10">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Hours</p>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{BUSINESS_HOURS_PLACEHOLDER}</p>
+              <p className="text-sm font-medium text-white">Start with a quote</p>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-500">{CONCIERGE.quoteIntro}</p>
             </div>
-
-            <div className="mt-6 border-t border-white/5 pt-6">
-              <FollowUsLinks />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Map</p>
-            <div className="flex min-h-[280px] flex-1 flex-col items-center justify-center rounded-3xl border border-dashed border-white/15 bg-stellar-void/80 p-8 text-center text-sm text-zinc-500">
-              <p className="max-w-xs">
-                Google Maps embed placeholder — open Google Maps, search your business, use <strong>Share → Embed a map</strong>, and paste the iframe code here.
-              </p>
-              <p className="mt-4 text-xs text-zinc-600">Odenville, AL</p>
-            </div>
-          </div>
+            <p className="mt-8 text-sm text-zinc-600">
+              <Link href="/quote" className="text-zinc-300 underline-offset-4 hover:text-white hover:underline">
+                Open the quote form
+              </Link>
+              {" · "}
+              <Link href="/services" className="text-zinc-300 underline-offset-4 hover:text-white hover:underline">
+                Browse services
+              </Link>
+            </p>
+          </GlassCard>
         </div>
       </div>
     </div>

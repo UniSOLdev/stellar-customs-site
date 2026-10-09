@@ -2,22 +2,24 @@ import type { Metadata } from "next";
 import { ReviewCard } from "@/components/ReviewCard";
 import { FacebookReviewsCta } from "@/components/FacebookReviewsCta";
 import { FacebookIcon } from "@/components/icons/SocialIcons";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { reviews } from "@/data/reviews";
 import { reviewsJsonLdGraph } from "@/lib/reviewsJsonLd";
+import { CONCIERGE } from "@/lib/concierge-copy";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Reviews | Luxury Mobile Automotive — South Florida & Alabama",
-  description: `Verified customer reviews for ${SITE.name} — luxury mobile installs, ambient lighting, and concierge repair across South Florida and Alabama.`,
+  title: "Reviews | Palm Beach County Detailing & Customization",
+  description: `Client feedback for ${SITE.name} — mobile detailing, restoration, ceramic protection, and custom interior work in Palm Beach County.`,
   keywords: [
     "Stellar Customs reviews",
-    "luxury mobile automotive reviews Miami",
-    "mobile mechanic reviews Birmingham",
+    "auto detailing reviews West Palm Beach",
+    "mobile detailing reviews Palm Beach County",
     "Facebook verified reviews",
   ],
   openGraph: {
     title: `Reviews | ${SITE.shortName}`,
-    description: `See what clients say about ${SITE.shortName} mobile luxury service and lighting installs.`,
+    description: `What clients say about ${SITE.shortName} in Palm Beach County.`,
   },
 };
 
@@ -25,39 +27,29 @@ export default function ReviewsPage() {
   const reviewsLd = reviewsJsonLdGraph(reviews);
 
   return (
-    <div className="min-h-dvh bg-stellar-black pb-40 pt-28 md:pb-24">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsLd) }}
-      />
+    <div className="min-h-dvh bg-stellar-black pb-24 pt-28 md:pb-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsLd) }} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Reputation</p>
+        <SectionHeader
+          eyebrow="Client feedback"
+          title={`${SITE.recommendPercent} of clients recommend us`}
+          description={`${CONCIERGE.reviewsIntro} ${SITE.reviewCount} reviews on Facebook.`}
+        />
 
-        <h1 className="font-display mt-4 text-center text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
-          100% Recommend <span className="text-stellar-blue">(34 Reviews)</span>
-        </h1>
-
-        <p className="mx-auto mt-4 flex items-center justify-center gap-2 text-center text-sm text-zinc-500">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-[#1877F2]/30 bg-[#1877F2]/10 text-[#1877F2]">
-            <FacebookIcon className="h-3.5 w-3.5" aria-hidden />
+        <p className="mt-6 flex items-center gap-2 text-sm text-zinc-500">
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-[#1877F2]">
+            <FacebookIcon className="h-4 w-4" aria-hidden />
           </span>
-          <span>Verified on Facebook</span>
+          Verified on Facebook
         </p>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((r) => (
-            <ReviewCard
-              key={r.id}
-              name={r.name}
-              rating={r.rating}
-              date={r.date}
-              text={r.text}
-              source={r.source}
-            />
+            <ReviewCard key={r.id} name={r.name} rating={r.rating} date={r.date} text={r.text} source={r.source} />
           ))}
         </div>
 
-        <div className="mt-14 flex justify-center border-t border-white/5 pt-12">
+        <div className="mt-14 flex justify-center border-t border-white/[0.06] pt-12">
           <FacebookReviewsCta />
         </div>
       </div>

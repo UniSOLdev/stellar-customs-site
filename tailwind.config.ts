@@ -21,7 +21,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-orbitron)", "system-ui", "sans-serif"],
+        display: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
       },
       backgroundImage: {
         "grid-fade":

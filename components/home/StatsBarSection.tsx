@@ -1,98 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { SectionReveal } from "@/components/SectionReveal";
-import { SITE_STATS } from "@/lib/site";
-
-function easeOutCubic(t: number) {
-  return 1 - (1 - t) ** 3;
-}
-
-function useCountUp(target: number, enabled: boolean, durationMs = 1100) {
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!enabled) return;
-    let raf = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / durationMs);
-      setValue(Math.round(target * easeOutCubic(t)));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [enabled, target, durationMs]);
-
-  return value;
-}
-
-type StatProps = {
-  label: string;
-  target: number;
-  suffix?: string;
-  enabled: boolean;
-};
-
-function Stat({ label, target, suffix = "", enabled }: StatProps) {
-  const n = useCountUp(target, enabled);
-  return (
-    <div className="text-center">
-      <p className="font-display text-3xl font-bold tabular-nums tracking-tight text-white sm:text-4xl">
-        {n}
-        {suffix}
-      </p>
-      <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-500">{label}</p>
-    </div>
-  );
-}
-
-function MobileCoverageStat() {
-  return (
-    <div className="text-center">
-      <p className="font-display text-[clamp(1.25rem,4vw,1.75rem)] font-bold tracking-tight text-white">Same-week</p>
-      <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-500">Mobile &amp; priority routing</p>
-    </div>
-  );
-}
+import { SITE, SITE_STATS } from "@/lib/site";
 
 export function StatsBarSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [on, setOn] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e?.isIntersecting) setOn(true);
-      },
-      { threshold: 0.25, rootMargin: "0px 0px -10% 0px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <section className="border-y border-white/[0.06] bg-stellar-void/80 py-16 sm:py-20">
-      <div ref={ref} className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <section className="border-y border-white/[0.06] py-12 sm:py-14">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <SectionReveal>
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Proof</p>
-          <h2 className="font-display mt-2 text-center text-2xl font-bold text-white sm:text-3xl">By the numbers</h2>
-          <p className="mx-auto mt-3 max-w-xl text-center text-xs text-zinc-500 sm:text-sm">
-            Mobile luxury coverage — South Florida and Alabama routes when capacity allows.
-          </p>
+          <dl className="grid grid-cols-2 gap-8 text-center sm:grid-cols-3">
+            <div>
+              <dt className="text-xs text-zinc-600">Public reviews</dt>
+              <dd className="mt-1 text-2xl font-semibold tabular-nums text-white">{SITE_STATS.fiveStarReviews}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-zinc-600">County</dt>
+              <dd className="mt-1 text-sm font-medium text-white">Palm Beach</dd>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <dt className="text-xs text-zinc-600">Contact</dt>
+              <dd className="mt-1 text-sm font-medium text-white">{SITE.phone}</dd>
+            </div>
+          </dl>
         </SectionReveal>
-        <div className="mt-12 grid grid-cols-2 gap-10 md:grid-cols-4 md:gap-8">
-          <Stat label="Vehicles customized" target={SITE_STATS.vehiclesCustomized} suffix="+" enabled={on} />
-          <Stat label="5-star reviews" target={SITE_STATS.fiveStarReviews} enabled={on} />
-          <Stat label="Years experience" target={SITE_STATS.yearsExperience} suffix="+" enabled={on} />
-          <MobileCoverageStat />
-        </div>
-        <p className="mt-8 text-center text-xs text-zinc-600">
-          Typical callback under {SITE_STATS.responseHours} hours when lines are open — emergency installs routed when
-          schedules allow.
-        </p>
       </div>
     </section>
   );
