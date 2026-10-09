@@ -81,8 +81,8 @@ export function HomePageClient({ galleryPreview, initialReviews }: Props) {
           <div className="grid items-end gap-8 md:grid-cols-[1fr_auto]">
             <SectionHeader
               eyebrow="Start here"
-              title="Tell us about the vehicle."
-              description="Send the year, make, model, requested services, and photos. We’ll confirm scope, location, and pricing."
+              title="Begin with a quote"
+              description="Share your vehicle details, requested services, and photos. We will confirm scope, timing, and investment before anything is scheduled."
             />
             <GlowButton href="/quote">Request a quote</GlowButton>
           </div>

@@ -5,6 +5,7 @@ import { SectionReveal } from "@/components/SectionReveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { formatPrice, fulfillmentLabel, PILLAR_META, servicesByPillar } from "@/lib/business/services-catalog";
 import type { ServicePillar } from "@/lib/business/types";
+import { CONCIERGE } from "@/lib/concierge-copy";
 import { SITE, BRAND_TAGLINE, absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -27,9 +28,8 @@ export default function ServicesPage() {
         <div className="max-w-3xl">
           <p className="text-sm font-medium text-zinc-500">Services</p>
           <h1 className="mt-3 text-balance text-4xl font-semibold tracking-tight text-white sm:text-6xl">{BRAND_TAGLINE}</h1>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-            Mobile maintenance and detailing. Studio restoration, paint correction, ceramic protection, and custom interior work.
-          </p>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">{CONCIERGE.heroLead}</p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600">{CONCIERGE.heroSupport}</p>
           <div className="mt-8">
             <GlowButton href="/quote">Request a quote</GlowButton>
           </div>

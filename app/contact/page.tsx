@@ -2,89 +2,100 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { GlowButton } from "@/components/GlowButton";
 import { FollowUsLinks } from "@/components/FollowUsLinks";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { CONCIERGE } from "@/lib/concierge-copy";
 import { BUSINESS_HOURS, SITE, siteSmsHref, siteTelHref, absoluteUrl } from "@/lib/site";
 import { STELLAR_STUDIO } from "@/lib/business/studio";
 
 export const metadata: Metadata = {
-  title: "Contact | Palm Beach County Mobile Detailing",
-  description: `Contact ${SITE.shortName} — mobile detailing, restoration, and customization across Palm Beach County. Call, text, or request a quote.`,
+  title: "Contact | Palm Beach County Vehicle Care",
+  description: `Contact ${SITE.shortName} for mobile detailing, restoration, and customization across Palm Beach County.`,
   alternates: { canonical: "/contact" },
   openGraph: { title: `Contact | ${SITE.shortName}`, url: absoluteUrl("/contact") },
 };
 
+function studioLine(): string {
+  if (STELLAR_STUDIO.published && STELLAR_STUDIO.streetAddress) {
+    return `${STELLAR_STUDIO.name} — ${STELLAR_STUDIO.streetAddress}, ${STELLAR_STUDIO.city}`;
+  }
+  return `${STELLAR_STUDIO.name} (${STELLAR_STUDIO.areaLabel}). Studio address and hours will be published when our lease is finalized. Until then, we schedule mobile visits and intake for in-studio projects by quote.`;
+}
+
 export default function ContactPage() {
   return (
-    <div className="min-h-dvh bg-stellar-black pb-40 pt-28 md:pb-24">
+    <div className="min-h-dvh bg-stellar-black pb-24 pt-28 md:pb-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-stellar-blue">Get in touch</p>
-        <h1 className="font-display mt-2 text-4xl font-bold text-white sm:text-5xl">Contact</h1>
-        <p className="mt-4 max-w-2xl text-zinc-400">
-          Palm Beach County mobile routes — quote-first for restoration, ceramic, and custom interior work.
-        </p>
+        <SectionHeader eyebrow="Contact" title="Speak with our team" description={CONCIERGE.contactIntro} />
 
-        <div className="mt-10 flex flex-wrap gap-4">
-          <GlowButton href="/quote">Get My Quote</GlowButton>
-          <a
-            href={siteTelHref()}
-            className="inline-flex min-h-[48px] items-center rounded-full border border-white/15 px-6 text-sm font-bold uppercase tracking-wider text-white"
-          >
-            Call {SITE.phone}
-          </a>
-          <a
-            href={siteSmsHref()}
-            className="inline-flex min-h-[48px] items-center rounded-full border border-white/15 px-6 text-sm font-bold uppercase tracking-wider text-white"
-          >
-            Text us
-          </a>
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <GlowButton href="/quote">Request a quote</GlowButton>
+          <p className="text-sm text-zinc-500">
+            Prefer to talk first?{" "}
+            <a href={siteTelHref()} className="text-zinc-300 underline-offset-4 hover:text-white hover:underline">
+              Call {SITE.phone}
+            </a>
+            {" · "}
+            <a href={siteSmsHref()} className="text-zinc-300 underline-offset-4 hover:text-white hover:underline">
+              Send a text
+            </a>
+          </p>
         </div>
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-2">
-          <div className="space-y-8 rounded-3xl border border-stellar-blue/15 bg-stellar-surface/40 p-8">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Email</p>
-              <a href={`mailto:${SITE.email}`} className="mt-2 block text-zinc-300 hover:text-stellar-blue">
-                {SITE.email}
-              </a>
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Service area</p>
-              <p className="mt-2 text-zinc-300">{SITE.location}</p>
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Studio</p>
-              <p className="mt-2 text-sm text-zinc-400">
-                {STELLAR_STUDIO.published
-                  ? `${STELLAR_STUDIO.name} — ${STELLAR_STUDIO.streetAddress}, ${STELLAR_STUDIO.city}`
-                  : `${STELLAR_STUDIO.name} (${STELLAR_STUDIO.areaLabel}) — address and map publish when lease is finalized.`}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-stellar-blue">Hours</p>
-              <ul className="mt-2 space-y-1 text-sm text-zinc-400">
-                {BUSINESS_HOURS.map((h) => (
-                  <li key={h.label}>
-                    {h.label}: {h.hours}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="mt-14 grid gap-6 lg:grid-cols-2">
+          <GlassCard className="space-y-8 p-8 sm:p-10">
+            <dl className="space-y-7">
+              <div>
+                <dt className="text-sm font-medium text-zinc-500">Email</dt>
+                <dd className="mt-1.5">
+                  <a href={`mailto:${SITE.email}`} className="text-base text-zinc-200 hover:text-white">
+                    {SITE.email}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-zinc-500">Service area</dt>
+                <dd className="mt-1.5 text-base leading-relaxed text-zinc-300">{SITE.location}</dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-zinc-500">Studio</dt>
+                <dd className="mt-1.5 text-sm leading-relaxed text-zinc-400">{studioLine()}</dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-zinc-500">Hours</dt>
+                <dd className="mt-1.5">
+                  <ul className="space-y-1 text-sm text-zinc-400">
+                    {BUSINESS_HOURS.map((h) => (
+                      <li key={h.label}>
+                        <span className="text-zinc-500">{h.label}</span>
+                        <span className="mx-2 text-zinc-700" aria-hidden>
+                          ·
+                        </span>
+                        {h.hours}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            </dl>
             <FollowUsLinks />
-          </div>
+          </GlassCard>
 
-          <div className="rounded-3xl border border-dashed border-white/15 bg-stellar-void/80 p-8 text-sm text-zinc-500">
-            <p className="font-semibold text-zinc-400">Map</p>
-            <p className="mt-4">
-              When the West Palm / Riviera studio opens, embed Google Maps here via{" "}
-              <code className="text-zinc-400">lib/business/studio.ts</code> — set{" "}
-              <code className="text-zinc-400">published: true</code> and map URLs.
-            </p>
-            <p className="mt-6">
-              Prefer a quote with photos?{" "}
-              <Link href="/quote" className="text-stellar-blue hover:underline">
-                Get My Quote
+          <GlassCard className="flex flex-col justify-between p-8 sm:p-10">
+            <div>
+              <p className="text-sm font-medium text-white">Start with a quote</p>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-500">{CONCIERGE.quoteIntro}</p>
+            </div>
+            <p className="mt-8 text-sm text-zinc-600">
+              <Link href="/quote" className="text-zinc-300 underline-offset-4 hover:text-white hover:underline">
+                Open the quote form
+              </Link>
+              {" · "}
+              <Link href="/services" className="text-zinc-300 underline-offset-4 hover:text-white hover:underline">
+                Browse services
               </Link>
             </p>
-          </div>
+          </GlassCard>
         </div>
       </div>
     </div>

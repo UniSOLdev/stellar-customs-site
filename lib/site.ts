@@ -21,10 +21,10 @@ export const SERVICE_CATEGORY_LINE =
 
 /** Primary regional pitch — Palm Beach County first. */
 export const REGIONAL_PITCH =
-  "Premium mobile detailing, vehicle restoration, ceramic protection, and custom interior work throughout Palm Beach County — from Jupiter to Boca Raton.";
+  "Mobile and studio vehicle care throughout Palm Beach County, from Jupiter to Boca Raton.";
 
 export const HERO_SUBLINE =
-  "Premium mobile detailing, vehicle restoration, ceramic protection and custom interior work throughout Palm Beach County.";
+  "Detailing, restoration, ceramic protection, and custom interiors—by appointment across Palm Beach County.";
 
 /** @deprecated Use lib/business/service-areas for city pages */
 export const SOUTH_FLORIDA_MARKETS = [
@@ -50,7 +50,7 @@ export const SITE = {
   shortName: "Stellar Customs",
   tagline: BRAND_TAGLINE,
   /** Homepage H1 support line */
-  heroHeadlineSupport: "Palm Beach County Automotive Detailing & Customization",
+  heroHeadlineSupport: "Vehicle care for Palm Beach County",
   subline: HERO_SUBLINE,
   phone: "(207) 557-4193",
   phoneDigits: "2075574193",

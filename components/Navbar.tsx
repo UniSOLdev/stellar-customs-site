@@ -154,7 +154,7 @@ export function Navbar() {
                 ))}
               </ul>
 
-              <div className="mt-auto space-y-3 border-t border-white/10 pt-6">
+              <div className="mt-auto space-y-4 border-t border-white/10 pt-6">
                 <Link
                   href="/quote"
                   className="flex min-h-[48px] items-center justify-center rounded-xl bg-white text-sm font-medium text-zinc-950"
@@ -162,15 +162,18 @@ export function Navbar() {
                 >
                   Request a quote
                 </Link>
-                <div className="grid grid-cols-2 gap-2">
-                  <a href={siteTelHref()} className="flex min-h-[44px] items-center justify-center rounded-xl border border-white/10 text-sm text-zinc-300">
-                    Call
+                <p className="text-center text-sm text-zinc-500">
+                  <a href={siteTelHref()} className="text-zinc-400 hover:text-white">
+                    {SITE.phone}
                   </a>
-                  <a href={siteSmsHref()} className="flex min-h-[44px] items-center justify-center rounded-xl border border-white/10 text-sm text-zinc-300">
+                  <span className="mx-2 text-zinc-700" aria-hidden>
+                    ·
+                  </span>
+                  <a href={siteSmsHref()} className="text-zinc-400 hover:text-white">
                     Text
                   </a>
-                </div>
-                <div className="flex justify-center gap-3 pt-2">
+                </p>
+                <div className="flex justify-center gap-3 pt-1">
                   <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-stellar-orange">
                     <InstagramIcon className="h-5 w-5" />
                   </a>

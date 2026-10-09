@@ -8,31 +8,31 @@ export const PILLAR_META: Record<
   detail: {
     order: "01",
     title: "Detail",
-    verb: "Clean and reset the vehicle.",
+    verb: "Return the vehicle to a refined baseline.",
     summary:
-      "Premium mobile detailing built for Florida — UV, sand, sunscreen, and daily SUV use. Not a cheap wash.",
+      "On-site detailing calibrated for Florida exposure—UV, salt air, sand, and daily use on luxury and utility vehicles alike.",
     href: "/services#detail",
   },
   restore: {
     order: "02",
     title: "Restore",
-    verb: "Bring aging or damaged components back.",
+    verb: "Repair and renew worn interior and exterior surfaces.",
     summary:
-      "Headliners, upholstery, headlights, and trim — the work that separates us from a rinse-and-go detailer.",
+      "Headliners, leather, trim, and headlights restored with the same care you expect from a dedicated studio.",
     href: "/services#restore",
   },
   protect: {
     order: "03",
     title: "Protect",
-    verb: "Higher-margin appearance and long-term protection.",
+    verb: "Preserve finish, depth, and clarity over time.",
     summary:
-      "Paint enhancement through professional ceramic — engineered for Palm Beach sun, rain, and contaminants.",
+      "Paint correction and ceramic coatings, applied with the environment and your driving habits in mind.",
     href: "/services#protect",
   },
   customize: {
     order: "04",
     title: "Customize",
-    verb: "Make the cabin unmistakably yours.",
+    verb: "Elevate the cabin with bespoke lighting and trim.",
     summary: "Starlight headliners, ambient lighting, upholstery, and appearance upgrades.",
     href: "/services#customize",
   },
@@ -92,7 +92,7 @@ export const SERVICE_CATALOG: CatalogService[] = [
     fulfillment: "mobile",
     seoTitle: "Mobile Detailing West Palm Beach | Palm Beach County",
     seoDescription:
-      "Mobile car detailing West Palm Beach and Palm Beach County. Premium mobile detailing — not a cheap car wash. Get a quote.",
+      "Mobile car detailing in West Palm Beach and Palm Beach County. Premium on-site care by appointment.",
     keywords: ["mobile detailing West Palm Beach", "mobile car detailing Palm Beach Gardens"],
   }),
   live({

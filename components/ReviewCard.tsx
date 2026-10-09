@@ -20,7 +20,7 @@ function Stars({ count }: { count: number }) {
           key={i}
           className={
             i < n
-              ? "text-lg leading-none text-[#f5c518] drop-shadow-[0_0_6px_rgba(245,197,24,0.35)]"
+              ? "text-lg leading-none text-[#d4af6a]"
               : "text-lg leading-none text-zinc-700"
           }
           aria-hidden
@@ -37,7 +37,7 @@ export function ReviewCard({ name, rating, date, text, source }: ReviewCardProps
     <motion.article
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 380, damping: 26 }}
-      className="flex h-full flex-col rounded-2xl border border-stellar-blue/20 bg-[#0b0b0f] p-5 shadow-[0_0_0_1px_rgba(0,180,255,0.08),0_0_28px_rgba(0,180,255,0.12)] transition-shadow duration-300 hover:border-stellar-blue/35 hover:shadow-[0_0_0_1px_rgba(0,180,255,0.15),0_0_36px_rgba(0,180,255,0.22)] sm:p-6"
+      className="flex h-full flex-col rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-sm transition duration-300 hover:border-white/[0.12] hover:bg-white/[0.045] sm:p-7"
     >
       <Stars count={rating} />
       <p className="mt-4 flex-1 text-sm leading-relaxed text-zinc-300 sm:text-[15px]">&ldquo;{text}&rdquo;</p>

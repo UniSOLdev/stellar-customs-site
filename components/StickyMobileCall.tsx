@@ -25,12 +25,15 @@ export function StickyMobileCall() {
     };
   }, [pathname]);
 
-  if (
+  const hideBar =
     pathname?.startsWith("/admin") ||
     pathname === "/login" ||
     pathname?.startsWith("/login/") ||
-    pathname === "/quote"
-  ) {
+    pathname === "/quote" ||
+    pathname === "/contact" ||
+    pathname === "/reviews";
+
+  if (hideBar) {
     return null;
   }
 

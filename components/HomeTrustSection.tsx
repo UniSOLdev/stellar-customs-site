@@ -20,7 +20,7 @@ const items = [
   },
   {
     title: "Quoting",
-    body: "Scope and pricing follow photos and inspection — not flat menu pricing for condition-heavy work.",
+    body: "Every project is quoted from photos and inspection so scope, timing, and investment align before we schedule.",
   },
 ] as const;
 
@@ -32,8 +32,8 @@ export function HomeTrustSection() {
           <SectionHeader
             align="center"
             eyebrow="Stellar Customs"
-            title="Detailing, restoration, and customization in Palm Beach County"
-            description="We document scope before work begins and match the process to your vehicle — exotics, daily drivers, and work trucks."
+            title="A vehicle concierge for Palm Beach County"
+            description="We confirm scope before work begins and tailor each visit to your vehicle—whether it is a daily driver, a family SUV, or a collector car."
           />
         </SectionReveal>
 
