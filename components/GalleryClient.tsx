@@ -101,7 +101,7 @@ export function GalleryClient({ dbImages, loadError }: Props) {
           {loadError
             ? "We couldn’t load live photos — showing curated placeholders. Try again in a moment."
             : useLive
-              ? "Cinematic installs from South Florida to Alabama — tap any frame for the fullscreen viewer."
+              ? "Detailing, restoration, and custom work across Palm Beach County — tap any frame for the fullscreen viewer."
               : "Masonry layout with category filters and lightbox — swap gradient tiles for your photography when assets are ready."}
         </p>
 
